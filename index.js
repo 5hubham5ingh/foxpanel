@@ -204,3 +204,16 @@ next.addEventListener("click", () => {
   date.setMonth(month);
   calendar();
 });
+
+/*------------------------------- Page zoom lever -------------------*/
+const rangeInput = document.querySelector(".level");
+
+rangeInput.addEventListener("input", function () {
+  const zoomLevel = this.value / 100; // Convert range to zoom level
+  // Apply zoom to body
+  document.body.style.transform = `scale(${zoomLevel})`;
+  document.body.style.transformOrigin = "top left";
+
+  document.body.style.width = `${100 / zoomLevel}%`;
+  document.body.style.height = `${100 / zoomLevel}%`;
+});

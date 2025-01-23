@@ -101,7 +101,6 @@ body {
 
 /* Weather */
 
-
 #weather {
   width: fit-content;
   height: fit-content;
@@ -189,7 +188,7 @@ body {
 }
 
 .widget svg {
-  fill: var(--active-color)
+  fill: var(--active-color);
 }
 
 .stat-item {
@@ -221,7 +220,7 @@ body {
 /* Calender */
 #calendar {
   background-color: var(--background-color);
- backdrop-filter: var(--background-filter);
+  backdrop-filter: var(--background-filter);
   border-radius: 2rem;
   padding: 0 1rem;
   margin: 0 1rem;
@@ -281,7 +280,7 @@ header {
   cursor: pointer;
 }
 .week div {
-  color: var(--active-color)
+  color: var(--active-color);
 }
 .current-date {
   background-color: var(--active-color);
@@ -295,7 +294,6 @@ header {
 .inactive {
   opacity: 0.5;
 }
-
 
 /* -------------------- common widget style ------------------------ */
 .widget {
@@ -324,4 +322,36 @@ header {
 
 .widget:hover::before {
   opacity: 1; /* Show the fully opaque background */
+}
+
+/*----------------------- Page zoom lever ----------------------------*/
+
+.slider {
+  --slider-height: 1rem;
+  --slider-border-radius: 1rem;
+  --level-transition-duration: 0.1s;
+
+  cursor: pointer;
+}
+
+.slider .level {
+  appearance: none;
+  max-width: 30%;
+  height: var(--slider-height);
+  background: var(--content-color);
+  overflow: hidden;
+  border-radius: var(--slider-border-radius);
+  transition: height var(--level-transition-duration);
+  cursor: inherit;
+}
+
+.slider .level::-webkit-slider-thumb {
+  appearance: none;
+  width: 0;
+  height: 0;
+  box-shadow: -200px 0 0 200px var(--background-color);
+}
+
+.slider:hover .level {
+  height: calc(var(--slider-height) * 2);
 }
