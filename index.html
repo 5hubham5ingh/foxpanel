@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom New Tab</title>
+    <script src="index.js" defer></script>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body style="height: 100%; margin: 0; padding: 0">
+    <div id="rightPanel">
+      <div id="clock" class="widget">
+        <div class="hours">
+          <div class="digit">
+            <div class="segment segment-1 n0 n2 n3 n5 n6 n7 n8 n9"></div>
+            <div class="segment segment-2 n0 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-3 n0 n1 n2 n3 n4 n7 n8 n9"></div>
+            <div class="segment segment-4 n2 n3 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-5 n0 n2 n6 n8"></div>
+            <div class="segment segment-6 n0 n1 n3 n5 n4 n6 n7 n8 n9"></div>
+            <div class="segment segment-7 n0 n2 n3 n5 n6 n8 n9"></div>
+          </div>
+          <div class="digit">
+            <div class="segment segment-1 n0 n2 n3 n5 n6 n7 n8 n9"></div>
+            <div class="segment segment-2 n0 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-3 n0 n1 n2 n3 n4 n7 n8 n9"></div>
+            <div class="segment segment-4 n2 n3 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-5 n0 n2 n6 n8"></div>
+            <div class="segment segment-6 n0 n1 n3 n5 n4 n6 n7 n8 n9"></div>
+            <div class="segment segment-7 n0 n2 n3 n5 n6 n8 n9"></div>
+          </div>
+        </div>
+        <div class="colons colons-1">
+          <div class="colon"></div>
+          <div class="colon"></div>
+        </div>
+        <div class="minutes">
+          <div class="digit">
+            <div class="segment segment-1 n0 n2 n3 n5 n6 n7 n8 n9"></div>
+            <div class="segment segment-2 n0 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-3 n0 n1 n2 n3 n4 n7 n8 n9"></div>
+            <div class="segment segment-4 n2 n3 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-5 n0 n2 n6 n8"></div>
+            <div class="segment segment-6 n0 n1 n3 n5 n4 n6 n7 n8 n9"></div>
+            <div class="segment segment-7 n0 n2 n3 n5 n6 n8 n9"></div>
+          </div>
+          <div class="digit">
+            <div class="segment segment-1 n0 n2 n3 n5 n6 n7 n8 n9"></div>
+            <div class="segment segment-2 n0 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-3 n0 n1 n2 n3 n4 n7 n8 n9"></div>
+            <div class="segment segment-4 n2 n3 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-5 n0 n2 n6 n8"></div>
+            <div class="segment segment-6 n0 n1 n3 n5 n4 n6 n7 n8 n9"></div>
+            <div class="segment segment-7 n0 n2 n3 n5 n6 n8 n9"></div>
+          </div>
+        </div>
+        <div class="colons colons-2">
+          <div class="colon"></div>
+          <div class="colon"></div>
+        </div>
+        <div class="seconds">
+          <div class="digit">
+            <div class="segment segment-1 n0 n2 n3 n5 n6 n7 n8 n9"></div>
+            <div class="segment segment-2 n0 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-3 n0 n1 n2 n3 n4 n7 n8 n9"></div>
+            <div class="segment segment-4 n2 n3 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-5 n0 n2 n6 n8"></div>
+            <div class="segment segment-6 n0 n1 n3 n5 n4 n6 n7 n8 n9"></div>
+            <div class="segment segment-7 n0 n2 n3 n5 n6 n8 n9"></div>
+          </div>
+          <div class="digit">
+            <div class="segment segment-1 n0 n2 n3 n5 n6 n7 n8 n9"></div>
+            <div class="segment segment-2 n0 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-3 n0 n1 n2 n3 n4 n7 n8 n9"></div>
+            <div class="segment segment-4 n2 n3 n4 n5 n6 n8 n9"></div>
+            <div class="segment segment-5 n0 n2 n6 n8"></div>
+            <div class="segment segment-6 n0 n1 n3 n5 n4 n6 n7 n8 n9"></div>
+            <div class="segment segment-7 n0 n2 n3 n5 n6 n8 n9"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="weather" class="widget">
+        <form class="search-form" id="weatherForm">
+          <button type="submit" class="search-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              fill="#303130"
+            >
+              <path
+                d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"
+              ></path>
+            </svg>
+          </button>
+          <input
+            id="cityInput"
+            class="search-input"
+            value="Delhi"
+            required
+            type="text"
+          />
+        </form>
+
+        <p class="temperature" id="temperature">31°</p>
+        <p class="weather-description" id="weatherDescription">Sunny</p>
+
+        <div class="weather-info">
+          <p>Now it feels like <span id="feelsLike">+31°</span></p>
+          <p>
+            Today, the temperature in the range from
+            <span id="tempRange">+31° to 27°</span>.
+          </p>
+        </div>
+
+        <div class="weather-stats">
+          <div class="stat-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="28"
+              height="28"
+              fill="rgba(240,187,64,1)"
+            >
+              <path
+                d="M10.5 17H4V15H10.5C12.433 15 14 16.567 14 18.5C14 20.433 12.433 22 10.5 22C8.99957 22 7.71966 21.0559 7.22196 19.7293L9.09513 19.0268C9.30843 19.5954 9.85696 20 10.5 20C11.3284 20 12 19.3284 12 18.5C12 17.6716 11.3284 17 10.5 17ZM5 11H18.5C20.433 11 22 12.567 22 14.5C22 16.433 20.433 18 18.5 18C16.9996 18 15.7197 17.0559 15.222 15.7293L17.0951 15.0268C17.3084 15.5954 17.857 16 18.5 16C19.3284 16 20 15.3284 20 14.5C20 13.6716 19.3284 13 18.5 13H5C3.34315 13 2 11.6569 2 10C2 8.34315 3.34315 7 5 7H13.5C14.3284 7 15 6.32843 15 5.5C15 4.67157 14.3284 4 13.5 4C12.857 4 12.3084 4.40463 12.0951 4.97317L10.222 4.27073C10.7197 2.94414 11.9996 2 13.5 2C15.433 2 17 3.567 17 5.5C17 7.433 15.433 9 13.5 9H5C4.44772 9 4 9.44772 4 10C4 10.5523 4.44772 11 5 11Z"
+              ></path>
+            </svg>
+            <div>
+              <p class="stat-value" id="windSpeed">4km/h</p>
+              <p class="stat-label">Wind</p>
+            </div>
+          </div>
+          <div class="stat-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="28"
+              height="28"
+              fill="rgba(240,187,64,1)"
+            >
+              <path
+                d="M12 3.09723L7.05025 8.04697C4.31658 10.7806 4.31658 15.2128 7.05025 17.9465C9.78392 20.6801 14.2161 20.6801 16.9497 17.9465C19.6834 15.2128 19.6834 10.7806 16.9497 8.04697L12 3.09723ZM12 0.268799L18.364 6.63276C21.8787 10.1475 21.8787 15.846 18.364 19.3607C14.8492 22.8754 9.15076 22.8754 5.63604 19.3607C2.12132 15.846 2.12132 10.1475 5.63604 6.63276L12 0.268799Z"
+              ></path>
+            </svg>
+            <div>
+              <p class="stat-value" id="humidity">48%</p>
+              <p class="stat-label">Humidity</p>
+            </div>
+          </div>
+          <div class="stat-item">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              fill="rgba(240,187,64,1)"
+            >
+              <path
+                d="M12.0003 3C17.3924 3 21.8784 6.87976 22.8189 12C21.8784 17.1202 17.3924 21 12.0003 21C6.60812 21 2.12215 17.1202 1.18164 12C2.12215 6.87976 6.60812 3 12.0003 3ZM12.0003 19C16.2359 19 19.8603 16.052 20.7777 12C19.8603 7.94803 16.2359 5 12.0003 5C7.7646 5 4.14022 7.94803 3.22278 12C4.14022 16.052 7.7646 19 12.0003 19ZM12.0003 16.5C9.51498 16.5 7.50026 14.4853 7.50026 12C7.50026 9.51472 9.51498 7.5 12.0003 7.5C14.4855 7.5 16.5003 9.51472 16.5003 12C16.5003 14.4853 14.4855 16.5 12.0003 16.5ZM12.0003 14.5C13.381 14.5 14.5003 13.3807 14.5003 12C14.5003 10.6193 13.381 9.5 12.0003 9.5C10.6196 9.5 9.50026 10.6193 9.50026 12C9.50026 13.3807 10.6196 14.5 12.0003 14.5Z"
+              ></path>
+            </svg>
+            <div>
+              <p class="stat-value" id="visibility">1.6km</p>
+              <p class="stat-label">Visibility</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="calendar" class="widget">
+        <header>
+          <pre class="arrow left">◀</pre>
+          <div class="header-display">
+            <p id="display"></p>
+          </div>
+          <pre class="arrow right">▶</pre>
+        </header>
+
+        <div class="week">
+          <div>Su</div>
+          <div>Mo</div>
+          <div>Tu</div>
+          <div>We</div>
+          <div>Th</div>
+          <div>Fr</div>
+          <div>Sa</div>
+        </div>
+        <div id="days"></div>
+      </div>
+
+      <!-- Setting icons for widgets: blur, radius, hide widgets and zoom level -->
+    </div>
+  </body>
+</html>

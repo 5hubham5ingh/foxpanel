@@ -1,0 +1,327 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap");
+
+:root {
+  --active-color: #efba1e;
+  --text-color: #000;
+  --content-color: #fff;
+  --background-color: #523131;
+  --background-filter: blur(30px);
+  --widget-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+}
+
+#rightPanel {
+  top: 0;
+  right: 0;
+  position: fixed;
+  padding: 1rem 0rem;
+  height: 100vh;
+  overflow: auto;
+}
+
+/* Digital Clock */
+
+#clock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90em;
+  background-color: var(--background-color);
+  backdrop-filter: var(--background-filter);
+  padding: 2em 1em 2em 5em;
+  border-radius: 2rem;
+  font-size: 0.42em;
+  margin: 0 1rem;
+  box-shadow: var(--widget-shadow);
+}
+.digit {
+  width: 12em;
+  position: relative;
+  height: 20em;
+}
+.hours,
+.minutes,
+.seconds {
+  position: relative;
+  display: flex;
+}
+.segment {
+  width: 8em;
+  height: 2em;
+  background-color: var(--active-color);
+  opacity: 0.08;
+  position: absolute;
+
+  border-radius: 10em;
+  transition: opacity 400ms;
+}
+.colons {
+  display: flex;
+  justify-content: space-around;
+  height: 12em;
+  flex-direction: column;
+  transform: translateX(-2em);
+}
+.colon {
+  width: 3em;
+  height: 3em;
+  background-color: var(--active-color);
+  border-radius: 50%;
+}
+.segment-2 {
+  transform-origin: top left;
+  transform: rotate(90deg) translate(1.5em, -0.05em);
+}
+.segment-3 {
+  transform-origin: top right;
+  transform: rotate(-90deg) translate(-1.5em, -0.5em);
+}
+.segment-4 {
+  transform: translateY(9em);
+}
+.segment-5 {
+  transform-origin: top left;
+  transform: rotate(90deg) translate(10.5em, -0.5em);
+}
+.segment-6 {
+  transform-origin: top right;
+  transform: rotate(-90deg) translate(-10.5em, -0.5em);
+}
+.segment-7 {
+  transform: translateY(18em);
+}
+.active {
+  opacity: 1;
+}
+
+/* Weather */
+
+
+#weather {
+  width: fit-content;
+  height: fit-content;
+  max-width: 28rem;
+  border-radius: 2rem;
+  padding: 1.25rem;
+  color: var(--text-color);
+  margin: 1rem;
+  box-shadow: var(--widget-shadow);
+  background-color: var(--background-color);
+  backdrop-filter: var(--background-filter);
+}
+
+.search-form {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  background-color: transparent;
+  margin-bottom: 0.75rem;
+}
+
+.search-button {
+  position: absolute;
+  left: 0.3rem;
+  top: 0.5rem;
+  padding: 0.25rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.search-input {
+  width: 87%;
+  color: var(--text-color);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  padding: 0.75rem 1.25rem 0.75rem 2rem;
+  background-color: var(--content-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.search-input::placeholder {
+  color: var(--text-color);
+}
+
+.search-input:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.weather-description {
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.temperature {
+  font-size: 6rem;
+  text-align: center;
+  margin: 0;
+  margin-left: 3rem;
+}
+
+.weather-info {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
+
+.weather-info p {
+  margin: 0.5rem 0;
+}
+
+.weather-stats {
+  margin: 1.25rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 1.5rem;
+  background-color: var(--content-color);
+  padding: 1.5rem 0.75rem;
+  color: var(--active-color);
+  font-size: 0.875rem;
+  box-shadow: var(--widget-shadow);
+}
+
+.widget svg {
+  fill: var(--active-color)
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-value {
+  font-weight: 600;
+  margin: 0;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Calender */
+#calendar {
+  background-color: var(--background-color);
+ backdrop-filter: var(--background-filter);
+  border-radius: 2rem;
+  padding: 0 1rem;
+  margin: 0 1rem;
+  box-shadow: var(--widget-shadow);
+}
+header {
+  margin: 1rem 0 -1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-display {
+  display: flex;
+  align-items: center;
+}
+.header-display p {
+  color: var(--active-color);
+  margin: 5px;
+  font-size: 1.2rem;
+  word-spacing: 0.5rem;
+}
+.arrow {
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 20px;
+  color: var(--active-color);
+  cursor: pointer;
+  transition: all 0.4s linear;
+}
+.arrow:hover {
+  background: var(--active-color);
+  transition: all 0.4s linear;
+}
+#days,
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin: auto;
+  padding: 0 0 1rem 1.5rem;
+  justify-content: space-between;
+}
+.week div,
+#days div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 100%;
+}
+#days div:hover {
+  background: var(--content-color);
+  color: var(--active-color);
+  cursor: pointer;
+}
+.week div {
+  color: var(--active-color)
+}
+.current-date {
+  background-color: var(--active-color);
+  color: var(--text-color);
+}
+.display-selected {
+  margin-bottom: 10px;
+  padding: 20px 20px;
+  text-align: center;
+}
+.inactive {
+  opacity: 0.5;
+}
+
+
+/* -------------------- common widget style ------------------------ */
+.widget {
+  position: relative; /* Needed for pseudo-element positioning */
+  transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.widget::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: inherit; /* Inherit the background color */
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease;
+  z-index: -1; /* Place behind the main element */
+  border-radius: inherit;
+}
+
+.widget:hover {
+  opacity: 1; /* Make the main element fully opaque */
+  backdrop-filter: blur(0);
+}
+
+.widget:hover::before {
+  opacity: 1; /* Show the fully opaque background */
+}
