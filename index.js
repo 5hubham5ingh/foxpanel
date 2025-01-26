@@ -50,6 +50,92 @@ function setColorUsingTheme(theme) {
   );
 }
 
+/*============================================= Left panel ==============================================*/
+/*---------------------- Pomodoro --------------------*/
+const timerElement = document.querySelector(".countdown-text");
+const startButton = document.getElementById("startButton");
+const breakButton = document.getElementById("break");
+const focusButton = document.getElementById("focus");
+const circleElement = document.querySelector("circle");
+var playing = false;
+var startTime = 25 * 60;
+var remember = startTime;
+var timeleft = startTime;
+let intervalId;
+focusButton.style.color = "rgba(255, 255, 255, 0.81)";
+
+function formatTime(time) {
+  return time < 10 ? `0${time}` : time;
+}
+timerElement.innerText = `${
+  formatTime(
+    Math.floor(startTime / 60),
+  )
+}:${formatTime(startTime - Math.floor(startTime / 60) * 60)}`;
+
+function countdown() {
+  timeleft = timeleft - 1;
+  let minutes = Math.floor(timeleft / 60);
+  let seconds = timeleft - minutes * 60;
+  let selected = "focus";
+  timerElement.innerText = `${formatTime(minutes)}:${formatTime(seconds)}`;
+  circleElement.style.strokeDashoffset = ((startTime - timeleft) / startTime) *
+    283;
+  if (timeleft < 0) {
+    clearInterval(intervalId);
+    timerElement.innerText = "nice job!";
+    resetTimer();
+  }
+}
+
+function startTimer() {
+  countdown();
+  intervalId = setInterval(countdown, 1000);
+}
+
+function pauseTimer() {
+  clearInterval(intervalId);
+}
+
+function resetTimer() {
+  pauseTimer();
+  playing = false;
+  startButton.innerText = "start";
+  timeleft = startTime;
+  timerElement.innerText = `${
+    formatTime(
+      Math.floor(startTime / 60),
+    )
+  }:${formatTime(startTime - Math.floor(startTime / 60) * 60)}`;
+  circleElement.style.strokeDashoffset = 0;
+}
+
+function onClickFunction() {
+  if (playing === false) {
+    startButton.innerText = "pause";
+    playing = true;
+    startTimer();
+  } else {
+    startButton.innerText = "start";
+    playing = false;
+    pauseTimer();
+  }
+}
+startButton.addEventListener("click", onClickFunction);
+breakButton.addEventListener("click", function () {
+  breakButton.style.color = "rgba(255, 255, 255, 0.81)";
+  focusButton.style.color = "rgba(255, 255, 255, 0.5)";
+  startTime = 60 * 5;
+  resetTimer();
+});
+focusButton.addEventListener("click", function () {
+  focusButton.style.color = "rgba(255, 255, 255, 0.81)";
+  breakButton.style.color = "rgba(255, 255, 255, 0.5)";
+  startTime = remember;
+  resetTimer();
+});
+
+/*========================================== right panel ================================================*/
 /*---------------------- clock -----------------------*/
 
 const hour1 = document.querySelectorAll(".hours .digit")[0];
@@ -207,13 +293,157 @@ next.addEventListener("click", () => {
 
 /*------------------------------- Page zoom lever -------------------*/
 const rangeInput = document.querySelector(".level");
+const body = document.body;
 
 rangeInput.addEventListener("input", function () {
   const zoomLevel = this.value / 100; // Convert range to zoom level
-  // Apply zoom to body
-  document.body.style.transform = `scale(${zoomLevel})`;
-  document.body.style.transformOrigin = "top left";
 
-  document.body.style.width = `${100 / zoomLevel}%`;
-  document.body.style.height = `${100 / zoomLevel}%`;
+  // Apply zoom to body
+  body.style.transform = `scale(${zoomLevel})`;
+  body.style.transformOrigin = "top left";
+  body.style.width = `${100 / zoomLevel}%`;
+
+  const isZoomOut = zoomLevel < 1;
+  const newHeight = isZoomOut
+    ? `${100 / zoomLevel}vh`
+    : `${(100 / zoomLevel) - (2 * zoomLevel)}vh`;
+  body.style.height = newHeight;
+  document.documentElement.style.setProperty(
+    "--container-height",
+    newHeight,
+  );
+});
+
+/*-------------------------- Git repo stats ------------------------*/
+function createRepoWidget({
+  username, // GitHub username
+  containerId, // ID of the container element
+}) {
+  const repoContainer = document.getElementById(containerId);
+
+  const languageColors = {
+    JavaScript: "#f1e05a",
+    Python: "#3572A5",
+    TypeScript: "#2b7489",
+    Vue: "#41b883",
+    React: "#61DAFB",
+    Angular: "#E53238",
+    Node: "#339933",
+    Express: "#000000",
+    Django: "#092E20",
+    CSS: "#563d7c",
+    HTML: "#e34c26",
+    Java: "#b07219",
+    C: "#555555",
+    "C#": "#178600",
+    "C++": "#f34b7d",
+    Go: "#00add8",
+    Ruby: "#701516",
+    PHP: "#4F5D95",
+    Swift: "#ffac45",
+    Kotlin: "#F18E33",
+    Rust: "#dea584",
+    SQL: "#e38c00",
+    MySQL: "#4479A1",
+    PostgreSQL: "#336791",
+    MongoDB: "#47A248",
+    Docker: "#2496ED",
+    GitHub: "#181717",
+    Azure: "#0078D4",
+    AWS: "#FF9900",
+  };
+
+  async function fetchRepos() {
+    const cacheKey = `repos_${username}`;
+    const cachedData = localStorage.getItem(cacheKey);
+    const cachedETag = localStorage.getItem(`${cacheKey}_etag`);
+    const now = Date.now();
+    const headers = {};
+
+    if (cachedETag) {
+      headers["If-None-Match"] = cachedETag;
+    }
+
+    const response = await fetch(
+      `https://api.github.com/users/${username}/repos`,
+      {
+        headers,
+      },
+    );
+
+    if (response.status === 304 && cachedData) {
+      return JSON.parse(cachedData);
+    }
+
+    if (!response.ok) {
+      console.error("GitHub API error:", response.statusText);
+      return [];
+    }
+
+    const repos = await response.json();
+    const eTag = response.headers.get("ETag");
+
+    localStorage.setItem(cacheKey, JSON.stringify(repos));
+    localStorage.setItem(`${cacheKey}_timestamp`, now);
+    if (eTag) {
+      localStorage.setItem(`${cacheKey}_etag`, eTag);
+    }
+
+    return repos;
+  }
+
+  async function initializeWidget() {
+    let repos = await fetchRepos();
+    repos = repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
+    repos = repos.slice(0, 4);
+    const fragment = document.createDocumentFragment();
+
+    repos.forEach((repo) => {
+      const card = document.createElement("article");
+      card.setAttribute("role", "region");
+      card.setAttribute("aria-labelledby", `repo-title-${repo.name}`);
+
+      const languageColor = languageColors[repo.language] || "#cccccc";
+
+      card.innerHTML = `
+            <a href="${repo.html_url}" target="_blank" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%; padding: 16px;" aria-label="Repository ${repo.name}">
+                <div style="flex: 1;">
+                    <h3 id="repo-title-${repo.name}" style="font-size: 1.25rem; font-weight: bold;">${repo.name}</h3>
+                    <p style="margin: 8px 0;">${
+        repo.description || "No description provided"
+      }</p>
+                </div>
+                <div style="margin-top: auto;">
+                    <div style="display: flex; align-items: center; font-size: 0.875rem;">
+                        <span style="display: flex; align-items: center; margin-right: 16px;">
+                            <span style="width: 10px; height: 10px; background-color: ${languageColor}; border-radius: 50%; margin-right: 4px;"></span>
+                            ${repo.language || "N/A"}
+                        </span>
+                        <span style="display: flex; align-items: center; margin-right: 16px;">
+                            <svg width="16" height="16" fill="var(--active-color)" style="margin-right: 4px;"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"></path></svg>
+                            ${repo.forks_count}
+                        </span>
+                        <span style="display: flex; align-items: center;">
+                            <svg width="16" height="16" fill="var(--active-color)" style="margin-right: 4px;"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"></path></svg>
+                            ${repo.stargazers_count}
+                        </span>
+                    </div>
+                    <div style="font-size: 0.75rem; margin-top: 8px; color: var(--active-color);">Size: ${repo.size} KB</div>
+                </div>
+            </a>
+        `;
+
+      fragment.appendChild(card);
+    });
+
+    repoContainer.innerHTML = "";
+    repoContainer.appendChild(fragment);
+  }
+
+  initializeWidget();
+}
+
+createRepoWidget({
+  username: "5hubham5ingh",
+  containerId: "repos",
 });

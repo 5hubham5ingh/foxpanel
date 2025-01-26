@@ -8,11 +8,22 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body style="height: 100%; margin: 0; padding: 0">
-
-    <label class="slider">
-      <input type="range" class="level" min="50" max="200" value="100" />
-    </label>
-
+    <div id="leftPanel">
+      <label class="slider">
+        <input type="range" class="level" min="100" max="300" value="70" />
+      </label>
+      <div class="timer-container widget">
+        <svg class="countdown-svg" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div class="countdown-text"></div>
+        <button id="startButton">start</button>
+        <div id="modeButtonContainer">
+          <button id="focus">focus</button>
+          <button id="break">break</button>
+        </div>
+      </div>
+    </div>
     <div id="rightPanel">
       <div id="clock" class="widget">
         <div class="hours">
@@ -200,9 +211,7 @@
         <div id="days"></div>
       </div>
 
-      <!-- toggle between widgets and news. -->
-
+      <div id="repos" class="widget"></div>
     </div>
-
   </body>
 </html>
