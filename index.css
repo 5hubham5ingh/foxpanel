@@ -96,41 +96,17 @@ body {
 
 .timer-container {
   text-align: center;
-  max-width: 70%;
+  width: 260%;
+  height: 25rem;
 }
 
 .countdown-svg {
   width: 100%;
-  height: 100%;
-}
-
-#focus,
-#break {
-  font-family: monospace;
-  background-color: var(--background-color);
-  border: none;
-  color: var(--text-color);
-  padding: clamp(0px, 7vw, 10px) clamp(0px, 7vw, 20px);
-  text-decoration: none;
-  display: inline-block;
-  font-size: clamp(0px, 7vw, 20px);
-  margin: 10px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  border-radius: 8px;
-  box-shadow: var(--widget-shadow);
-}
-
-#focus:hover,
-#break:hover {
-  color: var(--);
-  text-shadow: 0px 0px 6px var(--active-color);
-  transform: scale(1.05);
 }
 
 #startButton {
   font-family: monospace;
-  background-color: var(--background-color);
+  background-color: var(--content-color);
   border: none;
   color: var(--text-color);
   padding: clamp(0px, 7vw, 10px) clamp(0px, 7vw, 20px);
@@ -142,7 +118,7 @@ body {
   cursor: pointer;
   border-radius: clamp(0px, 4vw, 8px);
   position: relative;
-  transform: translate(0, -14rem);
+  transform: translate(0, -15rem);
   box-shadow: var(--widget-shadow);
 }
 
@@ -164,7 +140,7 @@ circle {
 
 .countdown-text {
   position: relative;
-  transform: translate(0, -15rem);
+  transform: translate(0, -16rem);
   font-size: 4rem;
   font-weight: bold;
   color: var(--text-color);
@@ -419,7 +395,7 @@ header {
   border-radius: 100%;
 }
 #days div:hover {
-  background: var(--content-color);
+  background: var(--active-color);
   color: var(--active-color);
   cursor: pointer;
 }
@@ -427,7 +403,7 @@ header {
   color: var(--active-color);
 }
 .current-date {
-  background-color: var(--active-color);
+  background-color: var(--content-color);
   color: var(--text-color);
 }
 .display-selected {
@@ -438,7 +414,6 @@ header {
 .inactive {
   opacity: 0.5;
 }
-
 
 /*----------------------------- git repos ------------------------------*/
 

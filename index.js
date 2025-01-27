@@ -54,15 +54,11 @@ function setColorUsingTheme(theme) {
 /*---------------------- Pomodoro --------------------*/
 const timerElement = document.querySelector(".countdown-text");
 const startButton = document.getElementById("startButton");
-const breakButton = document.getElementById("break");
-const focusButton = document.getElementById("focus");
 const circleElement = document.querySelector("circle");
 var playing = false;
 var startTime = 25 * 60;
-var remember = startTime;
 var timeleft = startTime;
 let intervalId;
-focusButton.style.color = "rgba(255, 255, 255, 0.81)";
 
 function formatTime(time) {
   return time < 10 ? `0${time}` : time;
@@ -77,7 +73,6 @@ function countdown() {
   timeleft = timeleft - 1;
   let minutes = Math.floor(timeleft / 60);
   let seconds = timeleft - minutes * 60;
-  let selected = "focus";
   timerElement.innerText = `${formatTime(minutes)}:${formatTime(seconds)}`;
   circleElement.style.strokeDashoffset = ((startTime - timeleft) / startTime) *
     283;
@@ -122,18 +117,6 @@ function onClickFunction() {
   }
 }
 startButton.addEventListener("click", onClickFunction);
-breakButton.addEventListener("click", function () {
-  breakButton.style.color = "rgba(255, 255, 255, 0.81)";
-  focusButton.style.color = "rgba(255, 255, 255, 0.5)";
-  startTime = 60 * 5;
-  resetTimer();
-});
-focusButton.addEventListener("click", function () {
-  focusButton.style.color = "rgba(255, 255, 255, 0.81)";
-  breakButton.style.color = "rgba(255, 255, 255, 0.5)";
-  startTime = remember;
-  resetTimer();
-});
 
 /*========================================== right panel ================================================*/
 /*---------------------- clock -----------------------*/
