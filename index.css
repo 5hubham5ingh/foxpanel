@@ -146,6 +146,41 @@ circle {
   color: var(--text-color);
 }
 
+/*-------------------------------- Vertical buttons -----------------------------*/
+.links {
+  height: 25rem;
+
+  button {
+    width: 70%;
+    height: 15%;
+    border-radius: inherit;
+    margin: 0 15%;
+    background-color: var(--content-color);
+    box-shadow: var(--widget-shadow);
+    border: none;
+
+    svg {
+      transition: fill 0.3s ease;
+    }
+  }
+
+  button:nth-child(1) svg:hover { 
+    fill: red; 
+  }
+
+  button:nth-child(2) svg:hover { 
+    fill: blue; 
+  }
+
+  button:nth-child(3) svg:hover { 
+    fill: green; 
+  }
+
+  button:nth-child(4) svg:hover { 
+    fill: orange; 
+  }
+}
+
 /*================================== Right panel ==============================*/
 #rightPanel {
   top: 0;
