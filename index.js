@@ -48,20 +48,11 @@ const searchBar = document.getElementById("search");
 const panels = document.getElementsByClassName("panel");
 const main = document.getElementById("main");
 
-searchBar.addEventListener("click", () => {
-  document.execCommand("insertText", false, "");
-  document.dispatchEvent(
-    new KeyboardEvent("keydown", {
-      key: "l",
-      ctrlKey: true,
-    }),
-  );
-});
-
 closePanelsButton.addEventListener("click", () => {
   for (const panel of panels) {
     // Scale and Fade Out
     panel.style.transform = "scale(1)";
+    main.style.visibility = "visible";
     panel.style.opacity = 1;
     panel.style.transform = "scale(3)";
     panel.style.opacity = 0;
@@ -72,7 +63,6 @@ closePanelsButton.addEventListener("click", () => {
 
     setTimeout(() => {
       panel.style.visibility = "collapse";
-      main.style.visibility = "visible";
     }, 500);
   }
 });
@@ -80,9 +70,9 @@ closePanelsButton.addEventListener("click", () => {
 openPanelsButton.addEventListener("click", () => {
   for (const panel of panels) {
     // Scale and Fade In
-    panel.style.transform = "scale(3)";
     panel.style.opacity = 0;
     panel.style.visibility = "visible";
+    panel.style.transform = "scale(3)";
     panel.style.transform = "scale(1)";
     panel.style.opacity = 1;
 

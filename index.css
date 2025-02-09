@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap");
 
 :root {
-  --active-color: #efba1e;
-  --text-color: #000;
-  --content-color: #fff;
-  --background-color: #523131;
+	--background-color: #54816a80;
+	--content-color: #57836f80;
+	--text-color: #ffffff;
+	--active-color: #e49550;
   --background-filter: blur(30px);
   --widget-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --container-height: 100vh;
