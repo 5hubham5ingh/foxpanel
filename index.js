@@ -10,20 +10,11 @@ try {
   );
 
   // temp set wallpaper listener
-  const [setWall, onChange] = SharedState("wall");
+  const [getWall, setWall, onChange] = SharedState("wall");
   const applyBackground = (newWall) => {
     document.body.style.backgroundImage = `url(${newWall.source})`;
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundRepeat = "no-repeat";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.width = "100%";
-    document.body.style.height = "100vh";
-    document.body.style.backgroundAttachment = "fixed";
   };
-  setWall((wall) => {
-    applyBackground(wall);
-    return wall;
-  });
+  getWall().then(applyBackground);
   onChange(applyBackground);
 } catch (_) { /*When not running as extensions script.*/ }
 
@@ -50,7 +41,80 @@ function setColorUsingTheme(theme) {
   );
 }
 
+/*================== Main ====================*/
+const openPanelsButton = document.getElementById("openPanels");
+const closePanelsButton = document.getElementById("closePanels");
+const searchBar = document.getElementById("search");
+const panels = document.getElementsByClassName("panel");
+const main = document.getElementById("main");
+
+searchBar.addEventListener("click", () => {
+  document.execCommand("insertText", false, "");
+  document.dispatchEvent(
+    new KeyboardEvent("keydown", {
+      key: "l",
+      ctrlKey: true,
+    }),
+  );
+});
+
+closePanelsButton.addEventListener("click", () => {
+  for (const panel of panels) {
+    // Scale and Fade Out
+    panel.style.transform = "scale(1)";
+    panel.style.opacity = 1;
+    panel.style.transform = "scale(3)";
+    panel.style.opacity = 0;
+
+    // blur in
+    main.style.opacity = 0;
+    main.style.opacity = 1;
+
+    setTimeout(() => {
+      panel.style.visibility = "collapse";
+      main.style.visibility = "visible";
+    }, 500);
+  }
+});
+
+openPanelsButton.addEventListener("click", () => {
+  for (const panel of panels) {
+    // Scale and Fade In
+    panel.style.transform = "scale(3)";
+    panel.style.opacity = 0;
+    panel.style.visibility = "visible";
+    panel.style.transform = "scale(1)";
+    panel.style.opacity = 1;
+
+    // blur out
+    main.style.opacity = 1;
+    main.style.visibility = "collapse";
+    main.style.opacity = 0;
+  }
+});
+
 /*============================================= Left panel ==============================================*/
+/*------------------------------- Page zoom lever -------------------*/
+const rangeInput = document.getElementById("zoom");
+const body = document.body;
+
+rangeInput.addEventListener("input", function () {
+  const zoomLevel = this.value / 100; // Convert range to zoom level
+  body.style.transform = `scale(${zoomLevel})`;
+  body.style.transformOrigin = "top left";
+  body.style.width = `${100 / zoomLevel}%`;
+
+  const isZoomOut = zoomLevel < 1;
+  const newHeight = isZoomOut
+    ? `${100 / zoomLevel}vh`
+    : `${(100 / zoomLevel) - (2 * zoomLevel)}vh`;
+  body.style.height = newHeight;
+  document.documentElement.style.setProperty(
+    "--container-height",
+    newHeight,
+  );
+});
+
 /*---------------------- Pomodoro --------------------*/
 const timerElement = document.querySelector(".countdown-text");
 const startButton = document.getElementById("startButton");
@@ -117,6 +181,144 @@ function onClickFunction() {
   }
 }
 startButton.addEventListener("click", onClickFunction);
+
+/*---------------------- Controls -------------------*/
+const volume = document.getElementById("volume");
+const brightness = document.getElementById("brightness");
+
+function updateSliderBackground(slider) {
+  const value = slider.value;
+  const max = slider.max; // Get the maximum value of the slider
+  const percentage = (value / max) * 100; // Calculate the percentage
+
+  slider.style.background =
+    `linear-gradient(to right, var(--active-color) 0% ${percentage}%, var(--content-color) ${percentage}% 100%)`;
+}
+
+volume.addEventListener("input", function () {
+  updateSliderBackground(this); // Pass the slider element to the function
+});
+
+brightness.addEventListener("input", function () {
+  updateSliderBackground(this); // Pass the slider element to the function
+});
+
+// Set initial background (important!)
+updateSliderBackground(volume);
+updateSliderBackground(brightness);
+
+/*---------------------- Todo ----------------------*/
+// DOM Variables
+const todoContainer = document.getElementById("todoContainer");
+const todoListCont = document.getElementById("todoListCont");
+const todoulList = document.getElementById("todoullist");
+const todoAdd = document.getElementById("todoAdd");
+const todoInput = document.getElementById("todoInput");
+let todoList = {}; // Initialize todoList JSON
+
+// Add event listeners for Add button click or Enter key press
+todoAdd.addEventListener("click", addtodoItem);
+todoInput.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    addtodoItem();
+  }
+});
+
+// Utility function to sanitize input
+function sanitizeInput(input) {
+  const div = document.createElement("div");
+  div.textContent = input;
+  return div.innerHTML;
+}
+
+// Function to add items to the TODO list
+function addtodoItem() {
+  const inputText = todoInput.value.trim(); // Remove useless whitespaces
+  if (inputText === "") {
+    return; // Return the function when the input is empty
+  }
+  const t = "t" + Date.now(); // Generate a Unique ID
+  const rawText = inputText;
+  todoList[t] = { title: rawText, status: "pending" }; // Add data to the JSON variable
+  const li = createTodoItemDOM(t, rawText, "pending"); // Create List item
+  todoulList.appendChild(li); // Append the new item to the DOM immediately
+  todoInput.value = ""; // Clear Input
+  SaveToDoData(); // Save changes
+}
+
+function createTodoItemDOM(id, title, status) {
+  let li = document.createElement("li");
+  li.innerHTML = sanitizeInput(title); // Sanitize before rendering in DOM
+  const span = document.createElement("span"); // Create the Cross Icon
+  span.setAttribute("class", "todoremovebtn");
+  span.textContent = "\u00d7";
+  li.appendChild(span); // Add the cross icon to the LI tag
+  li.setAttribute("class", "todolistitem");
+  if (status === "completed") {
+    li.classList.add("checked");
+  }
+  li.setAttribute("data-todoitem", id); // Set a data attribute to the li so that we can uniquely identify which li has been modified or deleted
+  return li; // Return the created `li` element
+}
+
+// Event delegation for task check and remove
+todoulList.addEventListener("click", (event) => {
+  if (event.target.tagName === "LI") {
+    event.target.classList.toggle("checked"); // Check the clicked LI tag
+    let id = event.target.dataset.todoitem;
+    todoList[id].status = (todoList[id].status === "completed")
+      ? "pending"
+      : "completed"; // Update status
+    SaveToDoData(); // Save Changes
+  } else if (event.target.tagName === "SPAN") {
+    let id = event.target.parentElement.dataset.todoitem;
+    event.target.parentElement.remove(); // Remove the clicked LI tag
+    delete todoList[id]; // Remove the deleted List item data
+    SaveToDoData(); // Save Changes
+  }
+});
+
+// Save JSON to local Storage
+function SaveToDoData() {
+  localStorage.setItem("todoList", JSON.stringify(todoList));
+}
+// Fetch saved JSON and create list items using it
+function ShowToDoList() {
+  try {
+    todoList = JSON.parse(localStorage.getItem("todoList")) || {}; // Parse stored data or initialize empty
+    const fragment = document.createDocumentFragment(); // Create a DocumentFragment
+    for (let id in todoList) {
+      const todo = todoList[id];
+      const li = createTodoItemDOM(id, todo.title, todo.status); // Create `li` elements
+      fragment.appendChild(li); // Add `li` to the fragment
+    }
+    todoulList.appendChild(fragment); // Append all `li` to the `ul` at once
+  } catch (error) {
+    console.error("Error loading from localStorage:", error);
+    localStorage.setItem("todoList", "{}"); // Reset corrupted data
+  }
+}
+ShowToDoList();
+/*----------------------- Quotes ---------------------*/
+async function fetchRandomQuote() {
+  try {
+    const response = await fetch(
+      "https://programming-quotes-api.azurewebsites.net/api/quotes/random",
+    );
+    const quote = await response.json();
+
+    document.getElementById("quote-author").textContent = quote.author;
+    document.getElementById("quote-text").textContent = quote.text;
+  } catch (error) {
+    console.error("Error fetching quote:", error);
+    document.getElementById("quote-author").textContent = "Error";
+    document.getElementById("quote-text").textContent =
+      "Failed to fetch quote. Please try again later.";
+  }
+}
+
+// Fetch quote when page loads
+fetchRandomQuote();
 
 /*========================================== right panel ================================================*/
 /*---------------------- clock -----------------------*/
@@ -272,29 +474,6 @@ next.addEventListener("click", () => {
   month++;
   date.setMonth(month);
   calendar();
-});
-
-/*------------------------------- Page zoom lever -------------------*/
-const rangeInput = document.querySelector(".level");
-const body = document.body;
-
-rangeInput.addEventListener("input", function () {
-  const zoomLevel = this.value / 100; // Convert range to zoom level
-
-  // Apply zoom to body
-  body.style.transform = `scale(${zoomLevel})`;
-  body.style.transformOrigin = "top left";
-  body.style.width = `${100 / zoomLevel}%`;
-
-  const isZoomOut = zoomLevel < 1;
-  const newHeight = isZoomOut
-    ? `${100 / zoomLevel}vh`
-    : `${(100 / zoomLevel) - (2 * zoomLevel)}vh`;
-  body.style.height = newHeight;
-  document.documentElement.style.setProperty(
-    "--container-height",
-    newHeight,
-  );
 });
 
 /*-------------------------- Git repo stats ------------------------*/

@@ -1,7 +1,5 @@
-const [getTheme] = new NativeFunctions(
-  "getTheme",
-);
-const [getWallpaper] = NativeFunctions("getWallpaper");
+const [getWallpaper, getTheme] = NativeFunctions("getWallpaper", "getTheme");
+const [getWall, setWallpaperState] = SharedState("wall");
 let lastWallpaperMTime;
 const setWallpaper = () =>
   getWallpaper(lastWallpaperMTime).then((wallpaper) => {
@@ -12,19 +10,16 @@ const setWallpaper = () =>
       wallpaper.mTime,
     );
     lastWallpaperMTime = wallpaper.mTime;
-    const [setWallpaper] = SharedState("wall");
-    setWallpaper(wallpaper);
-  });
+    setWallpaperState(wallpaper);
+  }).then(setWallpaper);
 
 let lastThemeMTime;
 const setTheme = () =>
   getTheme(lastThemeMTime).then(async (theme) => {
     console.log("Theme: ", theme);
-    browser.theme.update(JSON.parse(theme.source));
+    await browser.theme.update(JSON.parse(theme.source));
     lastThemeMTime = theme.mTime;
-    await setWallpaper();
   }).then(setTheme);
-setTheme().catch((error) => {
-  console.error("error in setTheme");
-  throw error;
-});
+
+setWallpaper();
+setTheme();
