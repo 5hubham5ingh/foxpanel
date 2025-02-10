@@ -186,6 +186,8 @@ function onClickFunction() {
 startButton.addEventListener("click", onClickFunction);
 
 /*---------------------- Controls -------------------*/
+
+// Volume
 const volume = document.getElementById("volume");
 const brightness = document.getElementById("brightness");
 
@@ -198,22 +200,31 @@ function updateSliderBackground(slider) {
     `linear-gradient(to right, var(--active-color) 0% ${percentage}%, var(--content-color) ${percentage}% 100%)`;
 }
 
+const [setVolume, setBrightness] = NativeFunctions(
+  "setVolume",
+  "setBrightness",
+);
+
+const [getVolume, getBrightness] = NativeFunctions(
+  "getVolume",
+  "getBrightness",
+);
+
 volume.addEventListener("input", function () {
-  updateSliderBackground(this); // Pass the slider element to the function
+  setVolume(this.value);
+  updateSliderBackground(this);
 });
 
 brightness.addEventListener("input", function () {
-  updateSliderBackground(this); // Pass the slider element to the function
+  setBrightness(this.value);
+  updateSliderBackground(this);
 });
 
-// Set initial background (important!)
-updateSliderBackground(volume);
+updateSliderBackground(volume); // Set initial background
 updateSliderBackground(brightness);
 
 /*---------------------- Todo ----------------------*/
 // DOM Variables
-const todoContainer = document.getElementById("todoContainer");
-const todoListCont = document.getElementById("todoListCont");
 const todoulList = document.getElementById("todoullist");
 const todoAdd = document.getElementById("todoAdd");
 const todoInput = document.getElementById("todoInput");
