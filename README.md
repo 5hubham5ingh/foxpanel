@@ -26,13 +26,11 @@
 3. [Baremetal](https://github.com/5hubham5ingh/baremetal?tab=readme-ov-file#native-function-integration) native app
 4. [WallRizz + baremetal extension]() for generating and updating dynamic themes and wallpaper.
    
+**Note:** Foxpanel is currently under development so some things will break or not work properly yet.
 
-**Note:** Foxpanel is currently under development so things will break and not work properly yet.
+## Setup
+- Install and setup baremetal addon for firefox and install its native app. [see](https://github.com/5hubham5ingh/baremetal).
+- Clone this repo and modify it to your pleasing then upload all the index and background.js files to baremetal and put main.js at `~/.config/baremetal/`.
+- Restart the browser and open a new tab to test.
+  
 
-## TODO:
-**`~/.config/main.js`**
-- Native functions for system controler featured in left control panel.
-  Brightness, Volume, Wifi, Blutooth, etc.
-
-**Widgets**
-- Impliment widgets featured at the dock panel.
