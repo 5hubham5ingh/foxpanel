@@ -47,11 +47,11 @@ const closePanelsButton = document.getElementById("closePanels");
 const searchBar = document.getElementById("search");
 const panels = document.getElementsByClassName("panel");
 const main = document.getElementById("main");
+let isPanelVisible = false;
 
-closePanelsButton.addEventListener("click", () => {
+const closePanels = () => {
   for (const panel of panels) {
     // Scale and Fade Out
-    panel.style.transform = "scale(1)";
     main.style.visibility = "visible";
     panel.style.opacity = 1;
     panel.style.transform = "scale(3)";
@@ -64,15 +64,16 @@ closePanelsButton.addEventListener("click", () => {
     setTimeout(() => {
       panel.style.visibility = "collapse";
     }, 500);
-  }
-});
 
-openPanelsButton.addEventListener("click", () => {
+    isPanelVisible = false;
+  }
+};
+
+const openPanels = () => {
   for (const panel of panels) {
     // Scale and Fade In
     panel.style.opacity = 0;
     panel.style.visibility = "visible";
-    panel.style.transform = "scale(3)";
     panel.style.transform = "scale(1)";
     panel.style.opacity = 1;
 
@@ -80,6 +81,18 @@ openPanelsButton.addEventListener("click", () => {
     main.style.opacity = 1;
     main.style.visibility = "collapse";
     main.style.opacity = 0;
+
+    isPanelVisible = true;
+  }
+};
+
+closePanelsButton.addEventListener("click", closePanels);
+
+openPanelsButton.addEventListener("click", openPanels);
+
+document.addEventListener("keydown", function (event) {
+  if (event.altKey && event.key === "Enter") {
+    isPanelVisible ? closePanels() : openPanels();
   }
 });
 

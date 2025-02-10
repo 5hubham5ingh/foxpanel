@@ -10,6 +10,7 @@
   --container-height: 100vh;
   font-size: 0.8rem;
   overflow-y: hidden;
+  scrollbar-width: none;
 }
 
 body {
@@ -20,7 +21,6 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  scrollbar-width: none;
   background-image: url(https://raw.githubusercontent.com/5hubham5ingh/foxpanel/refs/heads/assets/fox.webp);
 }
 
@@ -76,7 +76,7 @@ body {
 
 .panel {
   visibility: collapse;
-  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out !important;
   scrollbar-width: none;
 }
 
@@ -115,7 +115,6 @@ body {
 
 /*================================ Dock ================================*/
 #dock {
-  transform: scale(1);
   opacity: 1;
   position: fixed;
   bottom: 0.5rem;
