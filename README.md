@@ -32,5 +32,7 @@
 - Install and setup baremetal addon for firefox and install its native app. [see](https://github.com/5hubham5ingh/baremetal).
 - Clone this repo and modify it to your pleasing then upload all the index and background.js files to baremetal and put main.js at `~/.config/baremetal/`.
 - Restart the browser and open a new tab to test.
+- For dynamic theme and wallpaper scripting is required. You can use [WallRizz](https://github.com/5hubham5ingh/WallRizz) with its firefox extensions [1](https://github.com/5hubham5ingh/WallRizz/blob/main/themeExtensionScripts/firefoxWallpaper%405hubham5ingh.js) [2](https://github.com/5hubham5ingh/WallRizz/blob/main/themeExtensionScripts/firefox%405hubham5ingh.js).
+  or impliment your own theme and wallpaper generation, caching and update mechanism.
   
 
