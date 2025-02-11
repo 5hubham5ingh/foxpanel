@@ -200,28 +200,32 @@ function updateSliderBackground(slider) {
     `linear-gradient(to right, var(--active-color) 0% ${percentage}%, var(--content-color) ${percentage}% 100%)`;
 }
 
-const [setVolume, setBrightness] = NativeFunctions(
-  "setVolume",
-  "setBrightness",
-);
+try {
+  const [setVolume, setBrightness] = NativeFunctions(
+    "setVolume",
+    "setBrightness",
+  );
 
-const [getVolume, getBrightness] = NativeFunctions(
-  "getVolume",
-  "getBrightness",
-);
+  const [getVolume, getBrightness] = NativeFunctions(
+    "getVolume",
+    "getBrightness",
+  );
 
-volume.addEventListener("input", function () {
-  setVolume(this.value);
-  updateSliderBackground(this);
-});
+  volume.addEventListener("input", function () {
+    setVolume(this.value);
+    updateSliderBackground(this);
+  });
 
-brightness.addEventListener("input", function () {
-  setBrightness(this.value);
-  updateSliderBackground(this);
-});
+  brightness.addEventListener("input", function () {
+    setBrightness(this.value);
+    updateSliderBackground(this);
+  });
 
-updateSliderBackground(volume); // Set initial background
-updateSliderBackground(brightness);
+  updateSliderBackground(volume); // Set initial background
+  updateSliderBackground(brightness);
+} catch (error) {
+  console.error(error);
+}
 
 /*---------------------- Todo ----------------------*/
 // DOM Variables
