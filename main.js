@@ -68,7 +68,7 @@ export async function getVolume() {
     "@DEFAULT_SINK@",
   ]);
 
-  return volumeStat.split(" ").find(w = w.endsWith("%"));
+  return volumeStat.split(" ").find((w) => w.endsWith("%"));
 }
 
 let maxBrightness;

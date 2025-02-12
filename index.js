@@ -201,14 +201,24 @@ function updateSliderBackground(slider) {
 }
 
 try {
-  const [setVolume, setBrightness] = NativeFunctions(
-    "setVolume",
-    "setBrightness",
-  );
-
   const [getVolume, getBrightness] = NativeFunctions(
     "getVolume",
     "getBrightness",
+  );
+
+  getVolume().then((value) => {
+    volume.value = value;
+    updateSliderBackground(volume);
+  });
+
+  getBrightness().then((value) => {
+    brightness.value = value;
+    updateSliderBackground(brightness);
+  });
+
+  const [setVolume, setBrightness] = NativeFunctions(
+    "setVolume",
+    "setBrightness",
   );
 
   volume.addEventListener("input", function () {
@@ -220,9 +230,6 @@ try {
     setBrightness(this.value);
     updateSliderBackground(this);
   });
-
-  updateSliderBackground(volume); // Set initial background
-  updateSliderBackground(brightness);
 } catch (error) {
   console.error(error);
 }
