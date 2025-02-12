@@ -187,7 +187,7 @@ startButton.addEventListener("click", onClickFunction);
 
 /*---------------------- Controls -------------------*/
 
-// Volume
+// Volume & brightness
 const volume = document.getElementById("volume");
 const brightness = document.getElementById("brightness");
 
@@ -201,29 +201,36 @@ function updateSliderBackground(slider) {
 }
 
 try {
-  const [getVolume, getBrightness] = NativeFunctions(
+  // # Screenshot
+  const screenShotButtom = document.getElementById("screenShot");
+  const [screenShot] = NativeFunctions("screenShot");
+  screenShotButtom.onclick = () => screenShot();
+
+  // # Volume
+  const [setVolume, getVolume] = NativeFunctions(
+    "setVolume",
     "getVolume",
-    "getBrightness",
   );
+
+  volume.addEventListener("input", function () {
+    setVolume(this.value);
+    updateSliderBackground(this);
+  });
 
   getVolume().then((value) => {
     volume.value = value;
     updateSliderBackground(volume);
   });
 
+  // # Screen brightness
+  const [setBrightness, getBrightness] = NativeFunctions(
+    "setBrightness",
+    "getBrightness",
+  );
+
   getBrightness().then((value) => {
     brightness.value = value;
     updateSliderBackground(brightness);
-  });
-
-  const [setVolume, setBrightness] = NativeFunctions(
-    "setVolume",
-    "setBrightness",
-  );
-
-  volume.addEventListener("input", function () {
-    setVolume(this.value);
-    updateSliderBackground(this);
   });
 
   brightness.addEventListener("input", function () {

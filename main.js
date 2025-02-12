@@ -60,7 +60,6 @@ export async function setBrightness(percent) {
   await execAsync(["brightnessctl", "set", `${percent}%`]);
 }
 
-let maxVolume;
 export async function getVolume() {
   const volumeStat = await execAsync([
     "pactl",
@@ -77,4 +76,8 @@ export async function getBrightness() {
   if (maxBrightness) return ((currentBrightness * 100) / maxBrightness);
   maxBrightness = parseInt(await execAsync("brightnessctl max"));
   return ((currentBrightness * 100) / maxBrightness);
+}
+
+export function screenShot() {
+  return execAsync("hyprshot -m region", { newSession: true });
 }
