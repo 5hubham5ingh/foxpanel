@@ -195,6 +195,39 @@ startButton.addEventListener("click", onClickFunction);
 
 /*---------------------- Controls -------------------*/
 
+// Power buttons
+// Get references to the HTML elements
+const Shutdown = document.getElementById("shutdown");
+const Sleep = document.getElementById("sleep");
+const Hibernate = document.getElementById("hibernate");
+const Reboot = document.getElementById("reboot");
+
+// Declare constants for the options (assuming NativeFunctions returns an array)
+const [shutdown, sleep, hibernate, reboot] = NativeFunctions(
+  "shutdown",
+  "sleep",
+  "hibernate",
+  "reboot",
+);
+
+// Add event listeners to each button
+Shutdown.addEventListener(
+  "click",
+  () => confirm("Initiate system shutdown?") && shutdown(),
+);
+Sleep.addEventListener(
+  "click",
+  () => confirm("Put the computer to sleep?") && sleep(),
+);
+Hibernate.addEventListener(
+  "click",
+  () => confirm("Hibernate the computer?") && hibernate(),
+);
+Reboot.addEventListener(
+  "click",
+  () => confirm("Restart the computer?") && reboot(),
+);
+
 // Volume & brightness
 const volume = document.getElementById("volume");
 const brightness = document.getElementById("brightness");

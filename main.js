@@ -47,6 +47,32 @@ export function getTheme(lastMTime) {
   return watchAndLoadFile(PATHS.theme, lastMTime);
 }
 
+// power buttons
+export function systemctl(opt) {
+  const cmd = ["systemctl"];
+  switch (opt) {
+    case "shutdown":
+      cmd.push("shutdown");
+      break;
+    case "hibernate":
+      cmd.push("hibernate");
+      break;
+    case "reboot":
+      cmd.push("reboot");
+      break;
+    case "sleep":
+      cmd.push("sleep");
+      break;
+    case "logout":
+      cmd.push("logout");
+      break;
+    case "lockscreen":
+      break;
+  }
+
+  os.exec(cmd);
+}
+
 export async function setVolume(percent) {
   await execAsync([
     "pactl",
