@@ -100,9 +100,14 @@ document.addEventListener("keydown", function (event) {
 /*------------------------------- Page zoom lever -------------------*/
 const rangeInput = document.getElementById("zoom");
 const body = document.body;
+const zoomLevelCache = localStorage.getItem("zl");
 
-rangeInput.addEventListener("input", function () {
-  const zoomLevel = this.value / 100; // Convert range to zoom level
+function setZoom() {
+  const value = this.value ?? (rangeInput.value = zoomLevelCache ?? 100);
+  localStorage.setItem("zl", value);
+
+  const zoomLevel = value / 100; // Convert range to zoom level
+
   body.style.transform = `scale(${zoomLevel})`;
   body.style.transformOrigin = "top left";
   body.style.width = `${100 / zoomLevel}%`;
@@ -116,7 +121,10 @@ rangeInput.addEventListener("input", function () {
     "--container-height",
     newHeight,
   );
-});
+}
+
+setZoom();
+rangeInput.addEventListener("input", setZoom);
 
 /*---------------------- Pomodoro --------------------*/
 const timerElement = document.querySelector(".countdown-text");
