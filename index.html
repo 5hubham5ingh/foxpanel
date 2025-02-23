@@ -60,7 +60,7 @@
           <div class="countdown-text"></div>
           <button id="startButton">start</button>
         </div>
-        <div class="links widget">
+        <div id="powerButtons" class="widget">
           <button id="shutdown" title="System Shutdown">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -319,35 +319,35 @@
         </div>
       </div>
       <div id="sysUtils" class="widget">
-        <button id="wifi">
+        <button id="wifi" title="Wifi">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               d="M480-120q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM254-346l-84-86q59-59 138.5-93.5T480-560q92 0 171.5 35T790-430l-84 84q-44-44-102-69t-124-25q-66 0-124 25t-102 69ZM84-516 0-600q92-94 215-147t265-53q142 0 265 53t215 147l-84 84q-77-77-178.5-120.5T480-680q-116 0-217.5 43.5T84-516Z"
             />
           </svg>
         </button>
-        <button id="screenShot">
+        <button id="screenShot" title="Screen Shot">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               d="M680-80v-120H560v-80h120v-120h80v120h120v80H760v120h-80ZM200-200v-200h80v120h120v80H200Zm0-360v-200h200v80H280v120h-80Zm480 0v-120H560v-80h200v200h-80Z"
             />
           </svg>
         </button>
-        <button id="bluetooth">
+        <button id="bluetooth" title="Bluetooth">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               d="M440-80v-304L256-200l-56-56 224-224-224-224 56-56 184 184v-304h40l228 228-172 172 172 172L480-80h-40Zm80-496 76-76-76-74v150Zm0 342 76-74-76-76v150Z"
             />
           </svg>
         </button>
-        <button id="lockScreen">
+        <button id="lockScreen" title="Lock screen">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm0-80h480v-400H240v400Zm240-120q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80ZM240-160v-400 400Z"
             />
           </svg>
         </button>
-        <button id="logOut">
+        <button id="logOut" title="Logout">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"
@@ -606,49 +606,49 @@
           />
         </svg>
       </button>
-      <button id="alarm">
+      <button id="alarm" title="Alarm">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
           <path
             d="M480-80q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-440q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-800q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-440q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-80Zm0-360Zm112 168 56-56-128-128v-184h-80v216l152 152ZM224-866l56 56-170 170-56-56 170-170Zm512 0 170 170-56 56-170-170 56-56ZM480-160q117 0 198.5-81.5T760-440q0-117-81.5-198.5T480-720q-117 0-198.5 81.5T200-440q0 117 81.5 198.5T480-160Z"
           />
         </svg>
       </button>
-      <button id="radio">
+      <button id="radio" title="Radio">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
           <path
             d="M160-80q-33 0-56.5-23.5T80-160v-480q0-25 13.5-45t36.5-29l506-206 26 66-330 134h468q33 0 56.5 23.5T880-640v480q0 33-23.5 56.5T800-80H160Zm0-80h640v-280H160v280Zm160-40q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29ZM160-520h480v-80h80v80h80v-120H160v120Zm0 360v-280 280Z"
           />
         </svg>
       </button>
-      <button id="music">
+      <button id="music" title="Music">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
           <path
             d="M400-120q-66 0-113-47t-47-113q0-66 47-113t113-47q23 0 42.5 5.5T480-418v-422h240v160H560v400q0 66-47 113t-113 47Z"
           />
         </svg>
       </button>
-      <button id="gitWall">
+      <button id="gitWall" title="Wallpapers">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
           <path
             d="M680-640q-17 0-28.5-11.5T640-680q0-17 11.5-28.5T680-720q17 0 28.5 11.5T720-680q0 17-11.5 28.5T680-640ZM360-400l108-140 62 80 92-120 138 180H360ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm80-505v-215q0-33 23.5-56.5T320-880h200v80H320v215h-80Zm80 345q-33 0-56.5-23.5T240-320v-185h80v185h200v80H320Zm280 0v-80h200v-185h80v185q0 33-23.5 56.5T800-240H600Zm200-345v-215H600v-80h200q33 0 56.5 23.5T880-800v215h-80Z"
           />
         </svg>
       </button>
-      <button id="videoRecorder">
+      <button id="videoRecorder" title="Video recorder">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
           <path
             d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h480q33 0 56.5 23.5T720-720v180l160-160v440L720-420v180q0 33-23.5 56.5T640-160H160Zm0-80h480v-480H160v480Zm0 0v-480 480Z"
           />
         </svg>
       </button>
-      <button id="screenRecorder">
+      <button id="screenRecorder" title="Screen recorder">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
           <path
             d="M158-242q-37-50-57.5-110.5T80-480q0-67 20-127t57-110l58 57q-26 38-40.5 83.5T160-480q0 51 14.5 97t40.5 84l-57 57ZM480-80q-67 0-127-20t-110-57l57-58q38 26 83.5 40.5T480-160q51 0 96.5-14.5T660-215l57 58q-50 37-110 57T480-80Zm322-162-57-57q26-38 40.5-84t14.5-97q0-51-14.5-96.5T745-660l58-57q37 50 57 110t20 127q0 67-20.5 127.5T802-242ZM299-745l-57-57q50-37 110.5-57.5T480-880q68 0 128 20.5T718-802l-57 57q-38-26-84-40.5T480-800q-51 0-97 14.5T299-745Zm181 465q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280Z"
           />
         </svg>
       </button>
-      <button id="closePanels">
+      <button id="closePanels" title="Close">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
           <path
             d="M200-120q-33 0-56.5-23.5T120-200v-160h80v160h560v-560H200v160h-80v-160q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm220-160-56-58 102-102H120v-80h346L364-622l56-58 200 200-200 200Z"

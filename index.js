@@ -682,3 +682,32 @@ createRepoWidget({
   username: "5hubham5ingh",
   containerId: "repos",
 });
+
+//====================================== Dock apps =========================================
+
+const toggleBorder = (button) => {
+  if (button.classList.contains("clicked")) {
+    button.classList.remove("clicked");
+  } else {
+    button.classList.add("clicked");
+  }
+};
+
+//----------------------- Wallpaper Browser --------------------
+const gitWallButton = document.getElementById("gitWall");
+
+gitWallButton.onclick = () => {
+  toggleBorder(gitWallButton);
+  const oldGitWall = document.getElementById("gitWallFrame");
+  if (oldGitWall) {
+    oldGitWall.remove();
+    return;
+  }
+
+  const gitWall = document.createElement("iframe");
+  gitWall.src = "https://5hubham5ingh.github.io/WallRizz/";
+  gitWall.id = "gitWallFrame";
+  gitWall.classList.add("dockAppFrame");
+
+  document.body.appendChild(gitWall);
+};

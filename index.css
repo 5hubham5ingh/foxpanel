@@ -144,6 +144,22 @@ body {
       fill: var(--content-color);
     }
   }
+
+  button.clicked {
+    border: 0.3rem solid var(--active-color);
+  }
+}
+
+.dockAppFrame {
+	width: 80%;
+	height: 80%;
+	position: fixed;
+	left: 10%;
+  bottom: 10%;
+  backdrop-filter: blur(50px);
+  border: 1rem solid var(--active-color);
+  border-radius: 2rem;
+  box-shadow: var(--widget-shadow);
 }
 
 /*============================== Left panel ============================*/
@@ -251,8 +267,8 @@ circle {
   color: var(--text-color);
 }
 
-/*-------------------------------- Vertical buttons -----------------------------*/
-.links {
+/*-------------------------------- Power buttons -----------------------------*/
+#powerButtons {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
