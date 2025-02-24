@@ -728,8 +728,26 @@ videoRecorderButton.onclick = () => {
   vRecorder.id = "vRecorderFrame";
   vRecorder.classList.add("dockAppFrame");
 
-  // Add the allow attribute to request permissions
   vRecorder.allow = "camera; microphone; display-capture";
 
   document.body.appendChild(vRecorder);
+};
+
+//----------------------- Notes app ----------------------
+const notesAppButton = document.getElementById("notes");
+
+notesAppButton.onclick = () => {
+  toggleBorder(notesAppButton);
+  const oldNotesApp = document.getElementById("notesApp");
+  if (oldNotesApp) {
+    oldNotesApp.remove();
+    return;
+  }
+
+  const notesApp = document.createElement("iframe");
+  notesApp.src = "https://orayemre.github.io/Notemod/";
+  notesApp.id = "notesApp";
+  notesApp.classList.add("dockAppFrame");
+
+  document.body.appendChild(notesApp);
 };
