@@ -684,108 +684,61 @@ createRepoWidget({
 });
 
 //====================================== Dock apps =========================================
-
 const toggleBorder = (button) => {
-  if (button.classList.contains("clicked")) {
-    button.classList.remove("clicked");
-  } else {
-    button.classList.add("clicked");
-  }
+  button.classList.toggle("clicked");
 };
 
-//----------------------- Wallpaper Browser --------------------
-const gitWallButton = document.getElementById("gitWall");
-
-gitWallButton.onclick = () => {
-  toggleBorder(gitWallButton);
-  const oldGitWall = document.getElementById("gitWallFrame");
-  if (oldGitWall) {
-    oldGitWall.remove();
-    return;
-  }
-
-  const gitWall = document.createElement("iframe");
-  gitWall.src = "https://5hubham5ingh.github.io/WallRizz/";
-  gitWall.id = "gitWallFrame";
-  gitWall.classList.add("dockAppFrame");
-
-  document.body.appendChild(gitWall);
+const appConfigs = {
+  gitWall: {
+    src: "https://5hubham5ingh.github.io/WallRizz/",
+    id: "gitWallFrame",
+  },
+  videoRecorder: {
+    src: "https://5hubham5ingh.github.io/video-recorder-widget/",
+    id: "vRecorderFrame",
+    allow: "camera; microphone; display-capture",
+  },
+  notes: {
+    src: "https://orayemre.github.io/Notemod/",
+    id: "notesApp",
+  },
+  console: {
+    src: "https://repl.js.org/",
+    id: "consoleApp",
+  },
+  radio: {
+    src: "https://5hubham5ingh.github.io/web-radio.github.io/",
+    id: "radioApp",
+  },
 };
 
-//----------------------- Screen recorder ----------------------
-const videoRecorderButton = document.getElementById("videoRecorder");
-
-videoRecorderButton.onclick = () => {
-  toggleBorder(videoRecorderButton);
-  const oldVRecorder = document.getElementById("vRecorderFrame");
-  if (oldVRecorder) {
-    oldVRecorder.remove();
-    return;
+const createIframe = (config) => {
+  const iframe = document.createElement("iframe");
+  iframe.src = config.src;
+  iframe.id = config.id;
+  iframe.classList.add("dockAppFrame");
+  if (config.allow) {
+    iframe.allow = config.allow;
   }
-
-  const vRecorder = document.createElement("iframe");
-  vRecorder.src = "https://5hubham5ingh.github.io/video-recorder-widget/";
-  vRecorder.id = "vRecorderFrame";
-  vRecorder.classList.add("dockAppFrame");
-
-  vRecorder.allow = "camera; microphone; display-capture";
-
-  document.body.appendChild(vRecorder);
+  return iframe;
 };
 
-//----------------------- Notes app ----------------------
-const notesAppButton = document.getElementById("notes");
+const handleButtonClick = (buttonId, config) => {
+  const button = document.getElementById(buttonId);
+  if (!button) return;
 
-notesAppButton.onclick = () => {
-  toggleBorder(notesAppButton);
-  const oldNotesApp = document.getElementById("notesApp");
-  if (oldNotesApp) {
-    oldNotesApp.remove();
-    return;
-  }
-
-  const notesApp = document.createElement("iframe");
-  notesApp.src = "https://orayemre.github.io/Notemod/";
-  notesApp.id = "notesApp";
-  notesApp.classList.add("dockAppFrame");
-
-  document.body.appendChild(notesApp);
+  button.onclick = () => {
+    toggleBorder(button);
+    const existingApp = document.getElementById(config.id);
+    if (existingApp) {
+      existingApp.remove();
+      return;
+    }
+    const newApp = createIframe(config);
+    document.body.appendChild(newApp);
+  };
 };
 
-//----------------------- Console ----------------------
-const consoleButton = document.getElementById("console");
-
-consoleButton.onclick = () => {
-  toggleBorder(consoleButton);
-  const oldConsole = document.getElementById("consoleApp");
-  if (oldConsole) {
-    oldConsole.remove();
-    return;
-  }
-
-  const newConsole = document.createElement("iframe");
-  newConsole.src = "https://repl.js.org/";
-  newConsole.id = "consoleApp";
-  newConsole.classList.add("dockAppFrame");
-
-  document.body.appendChild(newConsole);
-};
-
-//----------------------- Radio ----------------------
-const radioButton = document.getElementById("radio");
-
-radioButton.onclick = () => {
-  toggleBorder(radioButton);
-  const oldRadio = document.getElementById("radioApp");
-  if (oldRadio) {
-    oldRadio.remove();
-    return;
-  }
-
-  const radio = document.createElement("iframe");
-  radio.src = "https://5hubham5ingh.github.io/web-radio.github.io/";
-  radio.id = "radioApp";
-  radio.classList.add("dockAppFrame");
-
-  document.body.appendChild(radio);
-};
+for (const buttonId in appConfigs) {
+  handleButtonClick(buttonId, appConfigs[buttonId]);
+}
