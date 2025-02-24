@@ -751,3 +751,41 @@ notesAppButton.onclick = () => {
 
   document.body.appendChild(notesApp);
 };
+
+//----------------------- Console ----------------------
+const consoleButton = document.getElementById("console");
+
+consoleButton.onclick = () => {
+  toggleBorder(consoleButton);
+  const oldConsole = document.getElementById("consoleApp");
+  if (oldConsole) {
+    oldConsole.remove();
+    return;
+  }
+
+  const newConsole = document.createElement("iframe");
+  newConsole.src = "https://repl.js.org/";
+  newConsole.id = "consoleApp";
+  newConsole.classList.add("dockAppFrame");
+
+  document.body.appendChild(newConsole);
+};
+
+//----------------------- Radio ----------------------
+const radioButton = document.getElementById("radio");
+
+radioButton.onclick = () => {
+  toggleBorder(radioButton);
+  const oldRadio = document.getElementById("radioApp");
+  if (oldRadio) {
+    oldRadio.remove();
+    return;
+  }
+
+  const radio = document.createElement("iframe");
+  radio.src = "https://5hubham5ingh.github.io/web-radio.github.io/";
+  radio.id = "radioApp";
+  radio.classList.add("dockAppFrame");
+
+  document.body.appendChild(radio);
+};
