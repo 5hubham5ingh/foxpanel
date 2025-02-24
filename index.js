@@ -711,3 +711,25 @@ gitWallButton.onclick = () => {
 
   document.body.appendChild(gitWall);
 };
+
+//----------------------- Screen recorder ----------------------
+const videoRecorderButton = document.getElementById("videoRecorder");
+
+videoRecorderButton.onclick = () => {
+  toggleBorder(videoRecorderButton);
+  const oldVRecorder = document.getElementById("vRecorderFrame");
+  if (oldVRecorder) {
+    oldVRecorder.remove();
+    return;
+  }
+
+  const vRecorder = document.createElement("iframe");
+  vRecorder.src = "https://5hubham5ingh.github.io/video-recorder-widget/";
+  vRecorder.id = "vRecorderFrame";
+  vRecorder.classList.add("dockAppFrame");
+
+  // Add the allow attribute to request permissions
+  vRecorder.allow = "camera; microphone; display-capture";
+
+  document.body.appendChild(vRecorder);
+};
