@@ -47,6 +47,14 @@ export function getTheme(lastMTime) {
   return watchAndLoadFile(PATHS.theme, lastMTime);
 }
 
+export function opaque() {
+  return execAsync("hyprctl dispatch setprop active opaque 1");
+}
+
+export function noOpaque() {
+  return execAsync("hyprctl dispatch setprop active opaque 0");
+}
+
 // power buttons
 export function systemctl(opt) {
   const cmd = ["systemctl"];

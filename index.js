@@ -16,6 +16,15 @@ try {
   };
   getWall().then(applyBackground);
   onChange(applyBackground);
+
+  // Toggle firefox opacity on focus
+
+  const [opaque, noOpaque] = NativeFunctions("opaque", "noOpaque");
+
+  opaque();
+  window.addEventListener("focus", () => opaque());
+
+  window.addEventListener("blur", () => noOpaque());
 } catch (_) { /*When not running as extensions script.*/ }
 
 function setColorUsingTheme(theme) {
@@ -196,39 +205,38 @@ startButton.addEventListener("click", onClickFunction);
 /*---------------------- Controls -------------------*/
 
 // Power buttons
-// Get references to the HTML elements
-const Shutdown = document.getElementById("shutdown");
-const Sleep = document.getElementById("sleep");
-const Hibernate = document.getElementById("hibernate");
-const Reboot = document.getElementById("reboot");
+try {
+  // Get references to the HTML elements
+  const Shutdown = document.getElementById("shutdown");
+  const Sleep = document.getElementById("sleep");
+  const Hibernate = document.getElementById("hibernate");
+  const Reboot = document.getElementById("reboot");
 
-// Declare constants for the options (assuming NativeFunctions returns an array)
-const [shutdown, sleep, hibernate, reboot] = NativeFunctions(
-  "shutdown",
-  "sleep",
-  "hibernate",
-  "reboot",
-);
+  // Declare constants for the options (assuming NativeFunctions returns an array)
+  const [systemctl] = NativeFunctions("systemctl");
 
-// Add event listeners to each button
-Shutdown.addEventListener(
-  "click",
-  () => confirm("Initiate system shutdown?") && shutdown(),
-);
-Sleep.addEventListener(
-  "click",
-  () => confirm("Put the computer to sleep?") && sleep(),
-);
-Hibernate.addEventListener(
-  "click",
-  () => confirm("Hibernate the computer?") && hibernate(),
-);
-Reboot.addEventListener(
-  "click",
-  () => confirm("Restart the computer?") && reboot(),
-);
+  // Add event listeners to each button
+  Shutdown.addEventListener(
+    "click",
+    () => confirm("Initiate system shutdown?") && systemctl("shutdown"),
+  );
+  Sleep.addEventListener(
+    "click",
+    () => confirm("Put the computer to sleep?") && systemctl("sleep"),
+  );
+  Hibernate.addEventListener(
+    "click",
+    () => confirm("Hibernate the computer?") && systemctl("hibernate"),
+  );
+  Reboot.addEventListener(
+    "click",
+    () => confirm("Restart the computer?") && systemctl("reboot"),
+  );
+} catch (e) {
+  console.error(e);
+}
 
-// Volume & brightness
+// wifi, screenShot, bluetooth, lockscreen, logout
 const volume = document.getElementById("volume");
 const brightness = document.getElementById("brightness");
 
@@ -278,6 +286,13 @@ try {
     setBrightness(this.value);
     updateSliderBackground(this);
   });
+
+  // # lock screen, logout
+  const [systemctl] = NativeFunctions("systemctl");
+  const logOutBtn = document.getElementById("logOut");
+  const lockScreenBtn = document.getElementById("lockScreen");
+  logOutBtn.onclick = () => systemctl("lockscreen");
+  lockScreenBtn.onclick = () => systemctl("logout");
 } catch (error) {
   console.error(error);
 }
