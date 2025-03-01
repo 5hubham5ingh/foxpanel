@@ -1,6 +1,7 @@
 const apiKey = "acdffa918ce63d18185d3897fa4d5024"; // Replace with your OpenWeatherMap API key
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 const forecastUrl = "https://api.openweathermap.org/data/2.5/forecast";
+let isIframeFocused = false;
 
 /*-------- Set browser theme and background image --------*/
 try {
@@ -16,15 +17,6 @@ try {
   };
   getWall().then(applyBackground);
   onChange(applyBackground);
-
-  // Toggle firefox opacity on focus
-
-  const [opaque, noOpaque] = NativeFunctions("opaque", "noOpaque");
-
-  opaque();
-  window.addEventListener("focus", () => opaque());
-
-  window.addEventListener("blur", () => noOpaque());
 } catch (_) { /*When not running as extensions script.*/ }
 
 function setColorUsingTheme(theme) {
@@ -732,6 +724,14 @@ const createIframe = (config) => {
   iframe.src = config.src;
   iframe.id = config.id;
   iframe.classList.add("dockAppFrame");
+  iframe.addEventListener("focusin", () => {
+    console.log("iframe gained focus");
+    isIframeFocused = true;
+  });
+  iframe.addEventListener("focusout", () => {
+    console.log("iframe lost focus");
+    isIframeFocused = false;
+  });
   if (config.allow) {
     iframe.allow = config.allow;
   }
