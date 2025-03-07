@@ -383,7 +383,7 @@ ShowToDoList();
 async function fetchRandomQuote() {
   try {
     const response = await fetch(
-      "https://programming-quotes-api.azurewebsites.net/api/quotes/random",
+      "https://thequoteshub.com/api/",
     );
     const quote = await response.json();
 
@@ -723,15 +723,6 @@ const createIframe = (config) => {
   const iframe = document.createElement("iframe");
   iframe.src = config.src;
   iframe.id = config.id;
-  iframe.classList.add("dockAppFrame");
-  iframe.addEventListener("focusin", () => {
-    console.log("iframe gained focus");
-    isIframeFocused = true;
-  });
-  iframe.addEventListener("focusout", () => {
-    console.log("iframe lost focus");
-    isIframeFocused = false;
-  });
   if (config.allow) {
     iframe.allow = config.allow;
   }
@@ -744,13 +735,35 @@ const handleButtonClick = (buttonId, config) => {
 
   button.onclick = () => {
     toggleBorder(button);
+    button.title = button.title.match(" 🔴")
+      ? button.title
+      : `${button.title} 🔴`;
+
     const existingApp = document.getElementById(config.id);
     if (existingApp) {
-      existingApp.remove();
+      if (existingApp.parentElement.style?.visibility === "visible") {
+        existingApp.parentElement.style.visibility = "collapse";
+        return;
+      } else existingApp.parentElement.style.visibility = "visible";
       return;
     }
+
+    const closeButton = document.createElement("button");
+    closeButton.innerText = "❌";
+    closeButton.title = `Close ${config.id}`;
+    closeButton.onclick = () => {
+      toggleBorder(button);
+      button.title = button.title.replace(" 🔴", "");
+      container.remove();
+    };
+
     const newApp = createIframe(config);
-    document.body.appendChild(newApp);
+    const container = document.createElement("div");
+    container.appendChild(closeButton);
+    container.appendChild(newApp);
+    container.classList.add("dockAppFrame");
+    container.style.visibility = "visible";
+    document.body.appendChild(container);
   };
 };
 
