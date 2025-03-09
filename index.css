@@ -179,8 +179,16 @@ body {
     border-radius: inherit;
     font-size: 1rem;
     padding: 1rem;
-    right: -2rem;
     top: -2rem;
+    right: 0;
+  }
+
+  button:nth-child(2){
+    right: 3rem;
+  }
+
+  button:nth-child(3){
+    right: 6rem;
   }
 
   button:hover {

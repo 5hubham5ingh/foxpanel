@@ -757,9 +757,30 @@ const handleButtonClick = (buttonId, config) => {
       container.remove();
     };
 
+    const openInNewWindowButton = document.createElement("button");
+    openInNewWindowButton.innerText = "↗";
+    openInNewWindowButton.title = `Open ${config.id} in new browser window`;
+    openInNewWindowButton.onclick = () => {
+      window.open(config.src, "_blank");
+      toggleBorder(button);
+      button.title = button.title.replace(" 🔴", "");
+      container.remove();
+    };
+
     const newApp = createIframe(config);
     const container = document.createElement("div");
+
+    const minimiseButton = document.createElement("button");
+    minimiseButton.innerText = "_";
+    minimiseButton.title = `Minimise ${config.id}`;
+    minimiseButton.onclick = () => {
+      container.style.visibility = "collapse";
+      toggleBorder(button);
+    };
+
     container.appendChild(closeButton);
+    container.appendChild(minimiseButton);
+    container.appendChild(openInNewWindowButton);
     container.appendChild(newApp);
     container.classList.add("dockAppFrame");
     container.style.visibility = "visible";
