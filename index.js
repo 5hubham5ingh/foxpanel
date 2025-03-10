@@ -43,9 +43,22 @@ function setColorUsingTheme(theme) {
 }
 
 /*================== Main ====================*/
+const searchBar = document.getElementById("search");
+searchBar.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    const query = searchBar.value.trim();
+    if (query) {
+      const url = `https://www.google.com/search?q=${
+        encodeURIComponent(query)
+      }`;
+      window.open(url, "_blank");
+    }
+    searchBar.value = "";
+  }
+});
+
 const openPanelsButton = document.getElementById("openPanels");
 const closePanelsButton = document.getElementById("closePanels");
-const searchBar = document.getElementById("search");
 const panels = document.getElementsByClassName("panel");
 const main = document.getElementById("main");
 let isPanelVisible = false;

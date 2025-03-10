@@ -60,6 +60,11 @@ body {
       margin-left: 1rem;
     }
 
+    #search:focus {
+      outline: none;
+      border: none;
+    }
+
     #openPanels {
       background-color: transparent;
       svg {
@@ -462,7 +467,6 @@ circle {
 }
 
 .todolistitem {
-  width: 85%;
   display: flex;
   background-color: var(--content-color);
   box-shadow: var(--widget-shadow);
