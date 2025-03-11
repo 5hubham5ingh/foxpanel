@@ -719,7 +719,7 @@ const appConfigs = {
     allow: "camera; microphone; display-capture",
   },
   notes: {
-    src: "https://orayemre.github.io/Notemod/",
+    src: "https://5hubham5ingh.github.io/keep-notes/",
     id: "notesApp",
   },
   console: {
