@@ -298,6 +298,91 @@ try {
   const lockScreenBtn = document.getElementById("lockScreen");
   logOutBtn.onclick = () => systemctl("lockscreen");
   lockScreenBtn.onclick = () => systemctl("logout");
+
+  // Wifi and bluetooth menu container
+  const menuContainer = document.getElementById("menuContainer");
+  // # Wifi
+  const wifiButton = document.getElementById("wifi");
+
+  const [isWifiConnected, getAvailableWifiConnections, connectWifi] =
+    NativeFunctions(
+      "isWifiConnected",
+      "getAvailableWifiConnections",
+      "connectWifi",
+    );
+  isWifiConnected().then((state) => {
+    if (state.isConnected) wifiButton.title = `Wifi: ${state.network}`;
+  });
+
+  wifiButton.onclick = () => {
+    if (menuContainer.classList.contains("open")) {
+      menuContainer.innerHTML = "";
+      menuContainer.classList.remove("open");
+      wifiButton.style.border = "none";
+      return;
+    }
+    menuContainer.classList.remove("open");
+    menuContainer.innerText = "";
+    menuContainer.innerHTML = "";
+    wifiButton.style.border = "1px solid var(--active-color)";
+
+    const initialState = document.createElement("span");
+    initialState.innerText = "Searching...";
+    menuContainer.appendChild(initialState);
+    menuContainer.classList.add("open");
+    getAvailableWifiConnections().then((networks) => {
+      networks.forEach((network) => {
+        const networkInfoContainer = document.createElement("button");
+        if (network?.connected) {
+          networkInfoContainer.innerText = `${network.name} : connected`;
+        } else networkInfoContainer.innerText = network.name;
+
+        networkInfoContainer.onclick = () => {
+          document.getElementById("wifiPassword")?.remove();
+          const passwordFieldContainer = document.createElement("div");
+          passwordFieldContainer.id = "wifiPassword";
+
+          const passwordField = document.createElement("input");
+          passwordField.type = "text";
+          passwordField.placeHolder = "Password";
+          passwordField.type = "password";
+
+          const handelSubmit = () => {
+            const password = passwordField.value.trim();
+            connectWifi(network.name, password)
+              .then((_res) => {
+                initialState.remove();
+                networkInfoContainer.remove();
+                menuContainer.classList.remove("open");
+              })
+              .catch((err) => {
+                alert("Wifi connection faile.");
+                console.error(err);
+              });
+          };
+
+          passwordField.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+              handelSubmit();
+            }
+          });
+
+          const submitButtom = document.createElement("button");
+          submitButtom.innerText = "✔";
+          submitButtom.onclick = handelSubmit;
+
+          passwordFieldContainer.appendChild(passwordField);
+          passwordFieldContainer.appendChild(submitButtom);
+          networkInfoContainer.insertAdjacentElement(
+            "afterend",
+            passwordFieldContainer,
+          );
+        };
+        menuContainer.appendChild(networkInfoContainer);
+        initialState.innerText = "Wifi networks";
+      });
+    });
+  };
 } catch (error) {
   console.error(error);
 }

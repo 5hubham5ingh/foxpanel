@@ -107,3 +107,50 @@ export async function getBrightness() {
 export function screenShot() {
   return execAsync("hyprshot -m region", { newSession: true });
 }
+
+export async function isWifiConnected() {
+  const wifiState = await execAsync("iwctl station wlan0 show");
+
+  const result = {};
+  const isConnected =
+    wifiState.split("\n").find((line) =>
+      line.split(" ").find((word) => word.trim() === "State")
+    ).split(" ").filter(Boolean)?.[1] === "connected";
+
+  if (isConnected) {
+    result.isConnected = true;
+    result.network = wifiState.split("\n").find((line) =>
+      line.split(" ").find((word) => word.trim() === "network")
+    ).split(" ").filter(Boolean)?.slice(2)?.join();
+  }
+
+  return result;
+}
+
+export function getAvailableWifiConnections() {
+  return execAsync("iwctl station wlan0 get-networks")
+    .then((res) => res.replace(/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]/g, ""))
+    .then((result) => {
+      print(result);
+      const networks = [];
+      const lines = result.split("\n"); //.map(ansi.stripStyle);
+      for (let i = 4; i < lines.length; i++) {
+        const line = lines[i].split(/ {2,}/g).map((word) => word.trim()).filter(
+          Boolean,
+        );
+        print(line);
+        const network = {};
+        if (line[0] === ">") {
+          network.connected = true;
+          network.name = line[2];
+        } else network.name = line[0];
+        networks.push(network);
+      }
+      return networks;
+    });
+}
+
+export function connectWifi(name, password) {
+  const passphrase = password ? `--passphrase "${password}"` : "";
+  return execAsync(`iwctl ${passphrase} station wlan0 connect ${name}`);
+}
