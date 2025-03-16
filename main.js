@@ -108,6 +108,20 @@ export function screenShot() {
   return execAsync("hyprshot -m region", { newSession: true });
 }
 
+/*---- Wifi ----*/
+
+export function isWlan0Down() {
+  return execAsync("iwctl device list")
+    .then((res) => res.replace(/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]/g, ""))
+    .then((state) => state.split("\n")?.[4]?.split(/ +/).includes("off"));
+}
+
+export function toggleWlan0Station(on) {
+  return execAsync(
+    `iwctl device wlan0 set-property Powered ${on ? "on" : "off"}`,
+  );
+}
+
 export async function isWifiConnected() {
   const wifiState = await execAsync("iwctl station wlan0 show");
 
@@ -131,18 +145,16 @@ export function getAvailableWifiConnections() {
   return execAsync("iwctl station wlan0 get-networks")
     .then((res) => res.replace(/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]/g, ""))
     .then((result) => {
-      print(result);
       const networks = [];
       const lines = result.split("\n"); //.map(ansi.stripStyle);
       for (let i = 4; i < lines.length; i++) {
         const line = lines[i].split(/ {2,}/g).map((word) => word.trim()).filter(
           Boolean,
         );
-        print(line);
         const network = {};
         if (line[0] === ">") {
           network.connected = true;
-          network.name = line[2];
+          network.name = line[1];
         } else network.name = line[0];
         networks.push(network);
       }

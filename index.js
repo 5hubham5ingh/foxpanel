@@ -1,7 +1,6 @@
 const apiKey = "acdffa918ce63d18185d3897fa4d5024"; // Replace with your OpenWeatherMap API key
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 const forecastUrl = "https://api.openweathermap.org/data/2.5/forecast";
-let isIframeFocused = false;
 
 /*-------- Set browser theme and background image --------*/
 try {
@@ -20,6 +19,7 @@ try {
 } catch (_) { /*When not running as extensions script.*/ }
 
 function setColorUsingTheme(theme) {
+  if (!theme) return;
   const textColor = theme.colors.ntp_text;
   const cardBackground = theme.colors.ntp_card_background;
   const contentBackground = theme.colors.ntp_background;
@@ -301,18 +301,30 @@ try {
 
   // Wifi and bluetooth menu container
   const menuContainer = document.getElementById("menuContainer");
+
   // # Wifi
   const wifiButton = document.getElementById("wifi");
 
-  const [isWifiConnected, getAvailableWifiConnections, connectWifi] =
-    NativeFunctions(
-      "isWifiConnected",
-      "getAvailableWifiConnections",
-      "connectWifi",
-    );
+  const [
+    isWlan0Down,
+    isWifiConnected,
+    getAvailableWifiConnections,
+    connectWifi,
+    toggleWlan0Station,
+  ] = NativeFunctions(
+    "isWlan0Down",
+    "isWifiConnected",
+    "getAvailableWifiConnections",
+    "connectWifi",
+    "toggleWlan0Station",
+  );
+
   isWifiConnected().then((state) => {
-    if (state.isConnected) wifiButton.title = `Wifi: ${state.network}`;
+    if (!state.isConnected) wifiButton.title = `Wifi: ${state.network}`;
   });
+
+  let isWlan0Up = false;
+  isWlan0Down().then((isDown) => isWlan0Up = !isDown);
 
   wifiButton.onclick = () => {
     if (menuContainer.classList.contains("open")) {
@@ -327,61 +339,95 @@ try {
     wifiButton.style.border = "1px solid var(--active-color)";
 
     const initialState = document.createElement("span");
-    initialState.innerText = "Searching...";
+    initialState.id = "initialStateHeader";
+    const wifiPowerButton = document.createElement("button");
+    wifiPowerButton.id = "wifiPowerButton";
+    wifiPowerButton.innerText = isWlan0Up ? "Off" : "On";
+    wifiPowerButton.onclick = () => {
+      toggleWlan0Station(!isWlan0Up);
+      isWlan0Up = !isWlan0Up;
+      menuContainer.innerHTML = "";
+      menuContainer.classList.remove("open");
+      wifiButton.style.border = "none";
+      return;
+    };
+    initialState.innerText = "Wifi networks";
+    initialState.appendChild(wifiPowerButton);
     menuContainer.appendChild(initialState);
     menuContainer.classList.add("open");
-    getAvailableWifiConnections().then((networks) => {
-      networks.forEach((network) => {
-        const networkInfoContainer = document.createElement("button");
-        if (network?.connected) {
-          networkInfoContainer.innerText = `${network.name} : connected`;
-        } else networkInfoContainer.innerText = network.name;
+    if (isWlan0Up) {
+      const state = document.createElement("h1");
+      state.innerText = "Loading...";
+      state.id = "wifiNetworkFetchingList";
+      menuContainer.appendChild(state);
+      getAvailableWifiConnections().then((networks) => {
+        state.remove();
+        networks.forEach((network) => {
+          const networkInfoContainer = document.createElement("button");
+          if (network?.connected) {
+            networkInfoContainer.innerText = `${network.name} : connected`;
+          } else networkInfoContainer.innerText = network.name;
 
-        networkInfoContainer.onclick = () => {
-          document.getElementById("wifiPassword")?.remove();
-          const passwordFieldContainer = document.createElement("div");
-          passwordFieldContainer.id = "wifiPassword";
+          networkInfoContainer.onclick = () => {
+            document.getElementById("wifiPassword")?.remove();
+            const passwordFieldContainer = document.createElement("div");
+            passwordFieldContainer.id = "wifiPassword";
 
-          const passwordField = document.createElement("input");
-          passwordField.type = "text";
-          passwordField.placeHolder = "Password";
-          passwordField.type = "password";
+            const passwordField = document.createElement("input");
+            passwordField.type = "text";
+            passwordField.placeHolder = "Password";
+            passwordField.type = "password";
 
-          const handelSubmit = () => {
-            const password = passwordField.value.trim();
-            connectWifi(network.name, password)
-              .then((_res) => {
-                initialState.remove();
-                networkInfoContainer.remove();
-                menuContainer.classList.remove("open");
-              })
-              .catch((err) => {
-                alert("Wifi connection faile.");
-                console.error(err);
-              });
+            const handelSubmit = () => {
+              const password = passwordField.value.trim();
+              connectWifi(network.name, password)
+                .then((_res) => {
+                  initialState.remove();
+                  networkInfoContainer.remove();
+                  menuContainer.classList.remove("open");
+                })
+                .catch((err) => {
+                  alert("Wifi connection faile.");
+                  console.error(err);
+                });
+            };
+
+            passwordField.addEventListener("keypress", (e) => {
+              if (e.key === "Enter") {
+                handelSubmit();
+              }
+            });
+
+            const submitButtom = document.createElement("button");
+            submitButtom.innerText = "✔";
+            submitButtom.onclick = handelSubmit;
+
+            passwordFieldContainer.appendChild(passwordField);
+            passwordFieldContainer.appendChild(submitButtom);
+            networkInfoContainer.insertAdjacentElement(
+              "afterend",
+              passwordFieldContainer,
+            );
           };
-
-          passwordField.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-              handelSubmit();
-            }
-          });
-
-          const submitButtom = document.createElement("button");
-          submitButtom.innerText = "✔";
-          submitButtom.onclick = handelSubmit;
-
-          passwordFieldContainer.appendChild(passwordField);
-          passwordFieldContainer.appendChild(submitButtom);
-          networkInfoContainer.insertAdjacentElement(
-            "afterend",
-            passwordFieldContainer,
-          );
-        };
-        menuContainer.appendChild(networkInfoContainer);
-        initialState.innerText = "Wifi networks";
+          menuContainer.appendChild(networkInfoContainer);
+        });
       });
-    });
+    }
+  };
+
+  const bluetoothButton = document.getElementById("bluetooth");
+
+  bluetoothButton.onclick = () => {
+    if (menuContainer.classList.contains("open")) {
+      menuContainer.innerHTML = "";
+      menuContainer.classList.remove("open");
+      bluetoothButton.style.border = "none";
+      return;
+    }
+    menuContainer.classList.remove("open");
+    menuContainer.innerText = "";
+    menuContainer.innerHTML = "";
+    bluetoothButton.style.border = "1px solid var(--active-color)";
   };
 } catch (error) {
   console.error(error);
