@@ -301,9 +301,10 @@ try {
 
   // Wifi and bluetooth menu container
   const menuContainer = document.getElementById("menuContainer");
+  const bluetoothButton = document.getElementById("bluetooth");
+  const wifiButton = document.getElementById("wifi");
 
   // # Wifi
-  const wifiButton = document.getElementById("wifi");
 
   const [
     isWlan0Down,
@@ -327,15 +328,15 @@ try {
   isWlan0Down().then((isDown) => isWlan0Up = !isDown);
 
   wifiButton.onclick = () => {
+    bluetoothButton.style.border = "none";
+    menuContainer.innerText = "";
+    menuContainer.innerHTML = "";
     if (menuContainer.classList.contains("open")) {
-      menuContainer.innerHTML = "";
       menuContainer.classList.remove("open");
       wifiButton.style.border = "none";
       return;
     }
-    menuContainer.classList.remove("open");
-    menuContainer.innerText = "";
-    menuContainer.innerHTML = "";
+
     wifiButton.style.border = "1px solid var(--active-color)";
 
     const initialState = document.createElement("span");
@@ -415,19 +416,67 @@ try {
     }
   };
 
-  const bluetoothButton = document.getElementById("bluetooth");
+  // # Bluetooth
 
-  bluetoothButton.onclick = () => {
+  const [isBtOn, turnOnBt, turnOffBt, btDevices, connectBt] = NativeFunctions(
+    "isBtOn",
+    "turnOnBt",
+    "turnOffBt",
+    "btDevices",
+    "connectBt",
+  );
+
+  bluetoothButton.onclick = async () => {
+    wifiButton.style.border = "none";
+    menuContainer.innerText = "";
+    menuContainer.innerHTML = "";
     if (menuContainer.classList.contains("open")) {
-      menuContainer.innerHTML = "";
       menuContainer.classList.remove("open");
       bluetoothButton.style.border = "none";
       return;
     }
-    menuContainer.classList.remove("open");
-    menuContainer.innerText = "";
-    menuContainer.innerHTML = "";
     bluetoothButton.style.border = "1px solid var(--active-color)";
+
+    const isBtOff = !(await isBtOn());
+    const initialState = document.createElement("span");
+    initialState.id = "initialStateHeader";
+    initialState.innerText = "Bluetooth";
+    const bluetoothPowerButton = document.createElement("button");
+    bluetoothPowerButton.id = "bluetoothPowerButton";
+    bluetoothPowerButton.innerText = isBtOff ? "On" : "Off";
+    bluetoothPowerButton.onclick = async () => {
+      isBtOff ? await turnOnBt() : await turnOffBt();
+      bluetoothButton.style.border = "none";
+      menuContainer.innerText = "";
+      menuContainer.innerHTML = "";
+      menuContainer.classList.remove("open");
+    };
+
+    initialState.appendChild(bluetoothPowerButton);
+    menuContainer.appendChild(initialState);
+    if (!isBtOff) {
+      const state = document.createElement("h1");
+      state.innerText = "Loading...";
+      state.id = "btDevicesFetchingList";
+      menuContainer.appendChild(state);
+      btDevices().then((btDevices) => {
+        state.remove();
+        btDevices.forEach((btDevice) => {
+          const btDeviceContainer = document.createElement("button");
+          btDeviceContainer.innerText = btDevice.name +
+            (btDevice.connected ? ": connected" : "");
+
+          btDeviceContainer.onclick = () => {
+            connectBt(btDevice.macAddr);
+            menuContainer.classList.remove("open");
+            bluetoothButton.style.border = "none";
+          };
+
+          menuContainer.appendChild(btDeviceContainer);
+        });
+      });
+    }
+    menuContainer.classList.add("open");
   };
 } catch (error) {
   console.error(error);

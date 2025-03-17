@@ -166,3 +166,46 @@ export function connectWifi(name, password) {
   const passphrase = password ? `--passphrase "${password}"` : "";
   return execAsync(`iwctl ${passphrase} station wlan0 connect ${name}`);
 }
+
+/*-- Bluetooth --*/
+
+export async function isBtOn() {
+  const state = await execAsync("bluetoothctl show");
+  return !!state.split("\n").find((line) => line.trim() === "Powered: yes");
+}
+
+export function turnOnBt() {
+  return execAsync("bluetoothctl power on");
+}
+
+export function turnOffBt() {
+  return execAsync("bluetoothctl power off");
+}
+
+export async function btDevices() {
+  const devices = await execAsync("bluetoothctl devices");
+  let connectedDevice;
+  await execAsync("bluetoothctl info").then(
+    (info) => {
+      info.split("\n").find((inf) => {
+        const [nameTg, ...name] = inf.trim().split(" ");
+        return (nameTg === "Name:") ? connectedDevice = name.join(" ") : false;
+      });
+    },
+  ).catch((_) => {});
+  const result = [];
+  devices.split("\n").forEach((device) => {
+    const [_, macAddr, ...name] = device.split(" ");
+    result.push({
+      macAddr,
+      name: name.join(" "),
+      connected: connectedDevice === name.join(" "),
+    });
+  });
+
+  return result;
+}
+
+export function connectBt(macAddr) {
+  return execAsync(`bluetoothctl connect ${macAddr}`);
+}

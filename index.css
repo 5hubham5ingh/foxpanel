@@ -421,6 +421,7 @@ circle {
       button {
         border-radius: 100%;
         box-shadow: var(--widget-shadow);
+        margin: 0;
         margin-left: auto;
         width: fit-content;
       }
