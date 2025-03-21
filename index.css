@@ -506,7 +506,7 @@ circle {
   margin-left: 16px;
   outline: none;
   border: none;
-  background-color: var(--background-color);
+  background-color: transparent;
   padding: 0 2px;
   font-size: 1.2rem;
   color: var(--text-color);
