@@ -411,7 +411,7 @@ circle {
     margin-top: 1rem;
     overflow-y: auto;
 
-    #initialStateHeader{
+    #initialStateHeader {
       color: var(--active-color);
       display: flex;
       flex-direction: row;
@@ -437,8 +437,8 @@ circle {
     }
 
     div {
-        margin: 0.5rem 0;
-        border-radius: inherit;
+      margin: 0.5rem 0;
+      border-radius: inherit;
       input {
         border-radius: inherit;
         background-color: #fff3;

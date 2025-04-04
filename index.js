@@ -902,9 +902,9 @@ const appConfigs = {
     src: "https://5hubham5ingh.github.io/keep-notes/",
     id: "notesApp",
   },
-  console: {
-    src: "https://repl.js.org/",
-    id: "consoleApp",
+  searchAwesomesBtn: {
+    src: "https://5hubham5ingh.github.io/searchawesomes",
+    id: "searchAwesomes",
   },
   radio: {
     src: "https://5hubham5ingh.github.io/web-radio.github.io/",
