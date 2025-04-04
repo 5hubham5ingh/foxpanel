@@ -80,6 +80,7 @@ const closePanels = () => {
     }, 500);
 
     isPanelVisible = false;
+    searchBar.focus();
   }
 };
 
